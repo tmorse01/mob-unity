@@ -1,21 +1,26 @@
-import Image from "next/image";
+import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
 
 export default function Home() {
-  // TODO figure out why fast refresh doesn't update page with changes on save
-  // className="flex min-h-screen flex-col items-center justify-between p-24"
   return (
-    <div className="bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center">
-      <div className="bg-orange-400 text-white py-16 w-full">
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">Mob Unity</h1>
+    <div
+      className="min-h-screen flex flex-col justify-center items-center"
+      data-theme="dark"
+    >
+      <div className="bg-base-300 py-16 w-full">
+        <div className="container width-100 mx-auto text-center">
+          <div className="flex items-center justify-center p-4 gap-8 ">
+            <Logo />
+            <h1 className="text-6xl font-bold mb-4">Mob Unity</h1>
+          </div>
           <p className="text-lg mb-8">Empowering Developers to Collaborate!</p>
           <div className="container mx-auto mt-12 text-center">
             <input
               type="text"
-              className="border border-gray-300 rounded-full py-2 px-4 w-64 placeholder-gray-400"
+              className="input max-w-xs py-2 px-4"
               placeholder="Create or join a room..."
             />
-            <button className="text-orange-500 bg-white py-2 px-6 ml-4 rounded-full font-semibold hover:bg-blue-100">
+            <button className="btn btn-primary py-2 px-6 ml-4 rounded-full font-semibold">
               Get Started
             </button>
           </div>
@@ -51,6 +56,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
