@@ -1,6 +1,6 @@
 const HomeContent = () => {
   return (
-    <div className="container p-24 mx-auto mt-12">
+    <div className="container p-24 mx-auto bg-base-300">
       <div className="grid grid-cols-2 gap-8">
         <div>
           <h2 className="mb-4 text-2xl font-semibold">

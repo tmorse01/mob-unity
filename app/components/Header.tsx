@@ -3,7 +3,7 @@ import TitleLogo from "./TitleLogo";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-neutral py-4 w-100">
+    <header className="bg-neutral py-4 w-100 px-8">
       <div className="container mx-auto flex justify-between items-center">
         <TitleLogo
           className="flex items-center justify-center gap-8"

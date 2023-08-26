@@ -1,3 +1,5 @@
+import Header from "../components/Header";
+
 export default function RoomLayout({
   children, // will be a page or nested layout
 }: {
@@ -5,7 +7,7 @@ export default function RoomLayout({
 }) {
   return (
     <section>
-      {/* Include shared UI here e.g. a header or sidebar */}
+      <Header />
       <nav></nav>
 
       {children}
