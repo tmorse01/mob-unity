@@ -1,13 +1,14 @@
-import Logo from "@/app/components/Logo";
+import TitleLogo from "./components/TitleLogo";
 
 const Hero = () => {
   return (
     <div className="w-full py-16 bg-neutral">
       <div className="container mx-auto text-center width-100">
-        <div className="flex items-center justify-center gap-8 p-4 ">
-          <Logo />
-          <h1 className="mb-4 text-6xl font-bold">Mob Unity</h1>
-        </div>
+        <TitleLogo
+          className="flex items-center justify-center gap-8 p-4"
+          titleClassName="text-6xl font-bold"
+          logoClassName="w-24 h-24"
+        />
         <p className="mb-8 text-lg">Empowering Developers to Collaborate!</p>
         <div className="container mx-auto mt-12 text-center">
           <input
