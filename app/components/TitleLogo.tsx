@@ -1,4 +1,5 @@
 import Logo from "./Logo";
+import Link from "next/link";
 
 type TitleLogoProps = {
   className: string;
@@ -14,7 +15,9 @@ const TitleLogo = ({
   return (
     <div className={className}>
       <Logo className={logoClassName} />
-      <h1 className={titleClassName}>Mob Unity</h1>
+      <h1 className={titleClassName}>
+        <Link href="/">Mob Unity</Link>
+      </h1>
     </div>
   );
 };
