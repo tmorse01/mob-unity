@@ -31,6 +31,7 @@ const exampleGoals = [
 
 const GoalsSection: React.FC<GoalsSectionProps> = () => {
   const [goals, setGoals] = useState<Goal[]>(exampleGoals);
+  const currentGoal = goals[0];
 
   const handleAddGoal = (newGoal: Goal) => {
     setGoals([...goals, newGoal]);
@@ -50,9 +51,24 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
 
   return (
     <div className="prose p-4">
-      <h2 className="mb-0">Goals</h2>
-      {/*add current goal display*/}
-
+      <div className="prose mb-16">
+        <h1>{"Current Goal"}</h1>
+        <h2>{currentGoal?.title}</h2>
+        <p>{currentGoal?.description}</p>
+      </div>
+      <div className="flex">
+        <h2 className="m-0 w-full">Goals</h2>
+        <button
+          className="btn btn-primary"
+          // @ts-ignore
+          onClick={() => window.goal_form.showModal()}
+        >
+          Add Goal
+        </button>
+        <dialog id="goal_form" className="modal">
+          <NewGoalForm onAddGoal={handleAddGoal} />
+        </dialog>
+      </div>
       <div className="space-y-2">
         {goals.map((goal) => (
           <div
@@ -91,8 +107,6 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
           </div>
         ))}
       </div>
-      {/* TODO turn this form into modal */}
-      <NewGoalForm onAddGoal={handleAddGoal} />
     </div>
   );
 };

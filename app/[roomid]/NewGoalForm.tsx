@@ -22,30 +22,44 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({ onAddGoal }) => {
       ...data,
       complete: false,
     };
+
     if (data.title.trim() && data.description.trim()) {
       onAddGoal(newGoal);
       reset();
+      // @ts-ignore
+      window.goal_form.close();
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="prose grid gap-4 items-center p-4 border-b">
+    <form
+      method="dialog"
+      className="modal-box"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="prose grid gap-4 items-center p-4">
+        <h3 className="font-bold text-lg">Add a new goal!</h3>
         <input
           type="text"
           placeholder="Title"
-          className="input"
+          className="input input-bordered"
           {...register("title")}
         />
         <input
           type="textarea"
           placeholder="Description"
-          className="input"
+          className="textarea textarea-bordered"
           {...register("description")}
         />
-        <button type="submit" className="btn btn-success">
-          Add Goal
-        </button>
+        <div className="modal-action">
+          <button type="submit" className="btn btn-success">
+            Add Goal
+          </button>
+          {/* @ts-ignore */}
+          <button className="btn" onClick={() => window.goal_form.close()}>
+            Close
+          </button>
+        </div>
       </div>
     </form>
   );
