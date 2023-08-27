@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="p-10 rounded footer footer-center" data-theme="dark">
+    <footer className="p-10 rounded footer footer-center bg-neutral">
       <div className="grid grid-flow-col gap-4">
         <a className="link link-hover">About us</a>
         <a className="link link-hover">Contact</a>
