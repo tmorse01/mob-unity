@@ -49,15 +49,15 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-4">Goals</h2>
+    <div className="prose p-4">
+      <h2 className="mb-0">Goals</h2>
       {/*add current goal display*/}
 
       <div className="space-y-2">
         {goals.map((goal) => (
           <div
             key={goal.id}
-            className="flex gap-4 items-center justify-between p-4 border-b"
+            className="flex gap-4 items-center justify-between border-b"
           >
             <input
               type="checkbox"
@@ -91,6 +91,7 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
           </div>
         ))}
       </div>
+      {/* TODO turn this form into modal */}
       <NewGoalForm onAddGoal={handleAddGoal} />
     </div>
   );

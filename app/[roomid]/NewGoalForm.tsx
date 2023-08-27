@@ -30,17 +30,17 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({ onAddGoal }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid gap-4 items-center p-4 border-b">
+      <div className="prose grid gap-4 items-center p-4 border-b">
         <input
           type="text"
           placeholder="Title"
-          className="mr-4 flex-grow p-2 border rounded"
+          className="input"
           {...register("title")}
         />
         <input
           type="textarea"
           placeholder="Description"
-          className="mr-4 flex-grow p-2 border rounded"
+          className="input"
           {...register("description")}
         />
         <button type="submit" className="btn btn-success">

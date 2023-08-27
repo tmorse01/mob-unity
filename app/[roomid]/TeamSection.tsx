@@ -22,7 +22,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
   };
 
   return (
-    <div className="container mx-auto my-4">
+    <div className="prose container mx-auto my-4">
       <h2 className="text-lg font-semibold mb-4">Team</h2>
       <ul className="list-disc mb-8">
         {teamMembers.map((member, index) => (
