@@ -4,18 +4,12 @@ import GoalsSection from "./GoalSection";
 import TeamSection from "./TeamSection";
 import Timer from "./Timer";
 import CurrentRoles from "./CurrentRole";
-
-type Roles = {
-  driver: string | undefined;
-  navigator: string | undefined;
-  facilitator: string | undefined;
-  mob: string[] | undefined;
-};
+import { Roles } from "../types";
+import Footer from "../components/Footer";
 
 const Room = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
-  const [goals, setGoals] = useState<string[]>([]);
   const [turnDuration, setTurnDuration] = useState<number>(420);
   const [currentRoles, setCurrentRoles] = useState<Roles>({
     driver: "Taylor",
@@ -53,34 +47,37 @@ const Room = () => {
   };
 
   return (
-    <div className="gap-4 min-h-screen bg-base-300">
-      <div className="m-4 p-4 border-solid rounded-md border-slate-500 border-2">
-        <div className="grid sm:grid-cols-1 md:grid-cols-2">
-          <Timer
-            duration={turnDuration}
-            onStart={handleStart}
-            onPause={handlePause}
-            onReset={onReset}
-            isRunning={isRunning}
-          />
-          <CurrentRoles
-            driver={currentRoles.driver}
-            navigator={currentRoles.navigator}
-            facilitator={currentRoles.facilitator}
-            mob={currentRoles.mob}
-          />
+    <div>
+      <div className="grid gap-4 m-8">
+        <div className="p-4 border-solid rounded-md border-slate-500 border-2 bg-neutral">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2">
+            <Timer
+              duration={turnDuration}
+              onStart={handleStart}
+              onPause={handlePause}
+              onReset={onReset}
+              isRunning={isRunning}
+            />
+            <CurrentRoles
+              driver={currentRoles.driver}
+              navigator={currentRoles.navigator}
+              facilitator={currentRoles.facilitator}
+              mob={currentRoles.mob}
+            />
+          </div>
+        </div>
+        <div className="p-4 border-solid rounded-md border-slate-500 border-2 bg-neutral">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2">
+            <TeamSection
+              teamMembers={teamMembers}
+              onAddMember={handleAddMember}
+              onRemoveMember={handleRemoveMember}
+            />
+            <GoalsSection />
+          </div>
         </div>
       </div>
-      <div className="m-4 p-4 border-solid rounded-md border-slate-500 border-2">
-        <div className="grid sm:grid-cols-1 md:grid-cols-2">
-          <TeamSection
-            teamMembers={teamMembers}
-            onAddMember={handleAddMember}
-            onRemoveMember={handleRemoveMember}
-          />
-          <GoalsSection goals={goals} onToggleGoal={handleToggleGoal} />
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 };

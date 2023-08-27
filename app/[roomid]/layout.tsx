@@ -8,7 +8,7 @@ export default function RoomLayout({
   return (
     <section>
       <Header />
-      <nav></nav>
+      {/* <nav></nav> */}
 
       {children}
     </section>
