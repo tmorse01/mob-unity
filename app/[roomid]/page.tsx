@@ -40,30 +40,46 @@ const Room = () => {
     setTeamMembers((prevMembers) => [...prevMembers, member]);
   };
 
+  const handleRemoveMember = (member: string) => {
+    const indexOfMember = teamMembers.findIndex(
+      (teamMember) => teamMember === member
+    );
+    const updatedMembers = teamMembers.filter((_, i) => i !== indexOfMember);
+    setTeamMembers(updatedMembers);
+  };
+
   const handleToggleGoal = (index: number) => {
     // Toggle the goal's status (completed or not)
   };
 
   return (
-    <div className="flex  gap-4 min-h-screen bg-base-300">
-      <div className="w-1/2 p-4">
-        <Timer
-          duration={turnDuration}
-          onStart={handleStart}
-          onPause={handlePause}
-          onReset={onReset}
-          isRunning={isRunning}
-        />
-        <CurrentRoles
-          driver={currentRoles.driver}
-          navigator={currentRoles.navigator}
-          facilitator={currentRoles.facilitator}
-          mob={currentRoles.mob}
-        />
+    <div className="gap-4 min-h-screen bg-base-300">
+      <div className="m-4 p-4 border-solid rounded-md border-slate-500 border-2">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2">
+          <Timer
+            duration={turnDuration}
+            onStart={handleStart}
+            onPause={handlePause}
+            onReset={onReset}
+            isRunning={isRunning}
+          />
+          <CurrentRoles
+            driver={currentRoles.driver}
+            navigator={currentRoles.navigator}
+            facilitator={currentRoles.facilitator}
+            mob={currentRoles.mob}
+          />
+        </div>
       </div>
-      <div className="w-1/2 p-4">
-        <TeamSection teamMembers={teamMembers} onAddMember={handleAddMember} />
-        <GoalsSection goals={goals} onToggleGoal={handleToggleGoal} />
+      <div className="m-4 p-4 border-solid rounded-md border-slate-500 border-2">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2">
+          <TeamSection
+            teamMembers={teamMembers}
+            onAddMember={handleAddMember}
+            onRemoveMember={handleRemoveMember}
+          />
+          <GoalsSection goals={goals} onToggleGoal={handleToggleGoal} />
+        </div>
       </div>
     </div>
   );
