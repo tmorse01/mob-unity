@@ -16,7 +16,9 @@ const TitleLogo = ({
     <div className={className}>
       <Logo className={logoClassName} />
       <h1 className={titleClassName}>
-        <Link href="/">Mob Unity</Link>
+        <Link className="no-underline" href="/">
+          Mob Unity
+        </Link>
       </h1>
     </div>
   );

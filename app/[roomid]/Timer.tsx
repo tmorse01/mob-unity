@@ -81,9 +81,9 @@ const Timer: React.FC<TimerProps> = ({}) => {
           Reset
         </button>
       </div>
-      {/* @ts-ignore */}
       <button
         className="btn btn-secondary btn-sm"
+        // @ts-ignore
         onClick={() => window.turn_duration.showModal()}
       >
         Edit Turn Duration

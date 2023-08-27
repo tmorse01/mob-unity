@@ -14,26 +14,28 @@ const CurrentRoles: React.FC<CurrentRolesProps> = ({
   mob,
 }) => {
   return (
-    <div className="flex flex-col items-center space-y-2">
-      <div className="text-center">
-        <p className="text-gray-600">Driver:</p>
-        <p className="text-xl font-bold">{driver}</p>
-      </div>
-      <div className="text-center">
-        <p className="text-gray-600">Navigator:</p>
-        <p className="text-xl font-bold">{navigator}</p>
-      </div>
-      {facilitator && (
+    <div className="prose flex flex-col items-center justify-center space-y-2">
+      <div className="flex flex-row gap-8">
         <div className="text-center">
-          <p className="text-gray-600">Facilitator:</p>
-          <p className="text-xl font-bold">{facilitator}</p>
+          <h3 className="mb-0 mt-0">Driver</h3>
+          <p>{driver}</p>
         </div>
-      )}
-      <div className="flex flex-row gap-4">
-        <p className="text-gray-600">Mobsters:</p>
+        <div className="text-center">
+          <h3 className="mb-0 mt-0">Navigator</h3>
+          <p>{navigator}</p>
+        </div>
+        {facilitator && (
+          <div className="text-center">
+            <h3 className="mb-0 mt-0">Facilitator</h3>
+            <p>{facilitator}</p>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-row gap-8 items-center justify-center">
+        <h3 className="mb-0 mt-0">Mobsters</h3>
         {mob?.map((mobster, i) => (
           <div key={mobster + i} className="text-center">
-            <p className="text-xl font-bold">{mobster}</p>
+            <p>{mobster}</p>
           </div>
         ))}
       </div>
