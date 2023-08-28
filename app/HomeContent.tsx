@@ -1,12 +1,12 @@
 const HomeContent = () => {
   return (
-    <div className="prose container">
+    <div className="bg-base-300 w-full p-16">
       <div className="grid grid-cols-2 gap-8">
-        <div>
+        <div className="prose">
           <h2 className="mb-4 text-2xl font-semibold">
             Unleash Collective Brilliance
           </h2>
-          <p className="text-gray-600">
+          <p>
             Mob Development is where coding becomes a symphony of minds, a
             journey where diverse developers converge to create brilliance.
             Together, we navigate through intricate code landscapes, debug with
@@ -14,11 +14,11 @@ const HomeContent = () => {
             contributions.
           </p>
         </div>
-        <div>
+        <div className="prose">
           <h2 className="mb-4 text-2xl font-semibold">
             Accelerate Learning, Amplify Growth
           </h2>
-          <p className="text-gray-600">
+          <p>
             Learning flourishes in collaboration. In our Mob Development haven,
             knowledge flows freely, leveling up both seasoned coders and
             newcomers. With shared wisdom and thriving skills, we pioneer the
