@@ -23,6 +23,18 @@ const TeamSection: React.FC<TeamSectionProps> = ({
 
   return (
     <div className="prose container mx-auto my-4">
+      <div className="mt-2">
+        <input
+          type="text"
+          value={newMember}
+          onChange={(e) => setNewMember(e.target.value)}
+          placeholder="Add a team member"
+          className="input input-bordered"
+        />
+        <button onClick={handleAddMember} className="btn btn-primary ml-2">
+          Add Member
+        </button>
+      </div>
       <h2 className="text-lg font-semibold mb-4">Team</h2>
       <ul className="list-disc mb-8">
         {teamMembers.map((member, index) => (
@@ -52,18 +64,6 @@ const TeamSection: React.FC<TeamSectionProps> = ({
           </li>
         ))}
       </ul>
-      <div className="mt-2">
-        <input
-          type="text"
-          value={newMember}
-          onChange={(e) => setNewMember(e.target.value)}
-          placeholder="Add a team member"
-          className="input input-bordered"
-        />
-        <button onClick={handleAddMember} className="btn btn-primary ml-2">
-          Add Member
-        </button>
-      </div>
     </div>
   );
 };

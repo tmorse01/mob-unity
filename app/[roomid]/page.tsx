@@ -1,20 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoalsSection from "./GoalSection";
 import TeamSection from "./TeamSection";
 import Timer from "./Timer";
 import CurrentRoles from "./CurrentRole";
 import { Roles } from "../types";
 import Footer from "../components/Footer";
+import next from "next/types";
+
+const defaultTeamMembers = [
+  "Taylor",
+  "Steve",
+  "Emmanuel",
+  "Tyler",
+  "Michael",
+  "Alan",
+];
+
+const initRoles = (teamMembers: string[]) => {
+  const shuffledMembers = [...teamMembers].sort(() => Math.random() - 0.5);
+
+  const newRoles: Roles = {
+    driver: shuffledMembers.pop(),
+    navigator: shuffledMembers.pop(),
+    facilitator: shuffledMembers.pop(),
+    mob: shuffledMembers,
+  };
+  return newRoles;
+};
 
 const Room = () => {
-  const [teamMembers, setTeamMembers] = useState<string[]>([]);
-  const [currentRoles, setCurrentRoles] = useState<Roles>({
-    driver: "Taylor",
-    navigator: "Steve",
-    facilitator: "Emmaneul",
-    mob: ["Paul", "Peter", "Mary"],
-  });
+  const [teamMembers, setTeamMembers] = useState<string[]>(defaultTeamMembers);
+  const [currentRoles, setCurrentRoles] = useState<Roles>(
+    initRoles(teamMembers)
+  );
+
+  const rotateRoles = () => {
+    const newRoles = { ...currentRoles };
+    newRoles.driver = currentRoles.navigator;
+    newRoles.navigator = currentRoles.facilitator;
+    newRoles.facilitator = newRoles.mob.shift();
+    if (currentRoles.driver !== undefined)
+      newRoles.mob.push(currentRoles.driver);
+    setCurrentRoles(newRoles);
+  };
 
   const handleAddMember = (member: string) => {
     setTeamMembers((prevMembers) => [...prevMembers, member]);
@@ -33,7 +62,7 @@ const Room = () => {
       <div className="grid gap-4 m-8">
         <div className="p-4">
           <div className="grid sm:grid-cols-1 md:grid-cols-2">
-            <Timer />
+            <Timer onTimeUp={rotateRoles} />
             <CurrentRoles
               driver={currentRoles.driver}
               navigator={currentRoles.navigator}

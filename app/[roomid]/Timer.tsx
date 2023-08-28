@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TimerDurationForm from "./TimerDurationForm";
 
-interface TimerProps {}
+interface TimerProps {
+  onTimeUp: () => void;
+}
 
 const showNotification = () => {
   if ("Notification" in window) {
@@ -23,7 +25,7 @@ const showNotification = () => {
   }
 };
 
-const Timer: React.FC<TimerProps> = ({}) => {
+const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
   const [turnDuration, setTurnDuration] = useState<number>(420);
   const [isRunning, setIsRunning] = useState(false);
   const [remainingTime, setRemainingTime] = useState(turnDuration);
@@ -49,6 +51,7 @@ const Timer: React.FC<TimerProps> = ({}) => {
       }, 1000);
     } else if (remainingTime === 0) {
       if (showNotifications) showNotification();
+      onTimeUp();
     }
 
     return () => clearInterval(timer);
@@ -109,15 +112,19 @@ const Timer: React.FC<TimerProps> = ({}) => {
         <button onClick={handleReset} className="btn btn-accent">
           Reset
         </button>
+        <button onClick={onTimeUp} className="btn btn-neutral">
+          Rotate
+        </button>
       </div>
-      <button
-        className="btn btn-secondary btn-sm"
-        // @ts-ignore
-        onClick={() => window.turn_duration.showModal()}
-      >
-        Edit Turn Duration
-      </button>
+
       <div className="prose flex items-center justify-center gap-4">
+        <button
+          className="btn btn-secondary btn-sm"
+          // @ts-ignore
+          onClick={() => window.turn_duration.showModal()}
+        >
+          Edit Turn Duration
+        </button>
         <label className="label">Show Notifications</label>
         <input
           type="checkbox"
