@@ -17,7 +17,7 @@ const CurrentRoles: React.FC<CurrentRolesProps> = ({
     <div className="prose">
       <div className="flex flex-cols gap-4 items-center">
         <h1 className="mb-0">Roles</h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="flex gap-4">
           <div>
             <h3>Driver</h3>
             <p>{driver}</p>
