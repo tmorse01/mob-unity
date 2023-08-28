@@ -31,7 +31,7 @@ const Room = () => {
   return (
     <div>
       <div className="grid gap-4 m-8">
-        <div className="p-4 border-solid rounded-md border-slate-500 border-2 bg-neutral">
+        <div className="p-4">
           <div className="grid sm:grid-cols-1 md:grid-cols-2">
             <Timer />
             <CurrentRoles
@@ -42,7 +42,7 @@ const Room = () => {
             />
           </div>
         </div>
-        <div className="p-4 border-solid rounded-md border-slate-500 border-2 bg-neutral">
+        <div className="p-4">
           <div className="grid sm:grid-cols-1 md:grid-cols-2">
             <TeamSection
               teamMembers={teamMembers}

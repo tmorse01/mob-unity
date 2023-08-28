@@ -117,7 +117,7 @@ const Timer: React.FC<TimerProps> = ({}) => {
       >
         Edit Turn Duration
       </button>
-      <div className="flex items-center justify-center gap-4">
+      <div className="prose flex items-center justify-center gap-4">
         <label className="label">Show Notifications</label>
         <input
           type="checkbox"

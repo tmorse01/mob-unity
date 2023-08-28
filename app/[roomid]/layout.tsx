@@ -6,10 +6,9 @@ export default function RoomLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="bg-base-100">
       <Header />
       {/* <nav></nav> */}
-
       {children}
     </section>
   );
