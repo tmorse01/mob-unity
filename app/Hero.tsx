@@ -1,6 +1,5 @@
 import Link from "next/link";
 import TitleLogo from "./components/TitleLogo";
-import ThemeSwitcher from "./components/ThemeSelect";
 
 const Hero = () => {
   return (

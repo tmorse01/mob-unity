@@ -9,7 +9,12 @@ const themeOptions = [
   { title: "Business", value: "business" },
   { title: "Corporate", value: "corporate" },
 ];
-const ThemeSwitcher: React.FC = () => {
+
+type ThemeSwitcherProps = {
+  className: string;
+};
+
+const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
   const [selectedTheme, setSelectedTheme] = useState<string>("");
 
   useEffect(() => {
@@ -28,7 +33,7 @@ const ThemeSwitcher: React.FC = () => {
 
   return (
     <select
-      className="select select-bordered absolute top-2 right-2 text-primary"
+      className={"select select-bordered text-primary " + className}
       data-choose-theme
       value={selectedTheme}
       onChange={(e) => handleThemeChange(e.target.value)}

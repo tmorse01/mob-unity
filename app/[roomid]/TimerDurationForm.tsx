@@ -15,7 +15,7 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
     <form
       method="dialog"
       onSubmit={onSubmit}
-      className="modal-box flex flex-col gap-4 bg-base-200"
+      className="modal-box flex flex-col gap-4 prose"
     >
       <div className="mb-4">
         <label htmlFor="duration" className="label">
@@ -38,11 +38,10 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
         <span>8</span>
         <span>9</span>
       </div>
-      <div className="modal-action flex items-center justify-center">
+      <div className="modal-action">
         <button type="submit" className="btn btn-primary btn-sm">
           Submit
         </button>
-        <button className="btn btn-secondary btn-sm">Close</button>
       </div>
     </form>
   );
