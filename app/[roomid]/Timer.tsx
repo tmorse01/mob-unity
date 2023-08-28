@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import TimerDurationForm from "./TimerDurationForm";
-import Logo from "../components/Logo";
 
 interface TimerProps {}
 
@@ -9,13 +8,14 @@ const showNotification = () => {
     if (Notification.permission === "granted") {
       new Notification("Time is up!", {
         body: "Rotate the current roles.",
-        // icon: <Logo className="w-4 h-4" />,
+        icon: "./alert.svg",
       });
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
           new Notification("Time is up!", {
             body: "Rotate the current roles.",
+            icon: "./alert.svg",
           });
         }
       });
@@ -24,9 +24,10 @@ const showNotification = () => {
 };
 
 const Timer: React.FC<TimerProps> = ({}) => {
-  const [turnDuration, setTurnDuration] = useState<number>(12);
+  const [turnDuration, setTurnDuration] = useState<number>(420);
   const [isRunning, setIsRunning] = useState(false);
   const [remainingTime, setRemainingTime] = useState(turnDuration);
+  const [showNotifications, setShowNotifications] = useState<boolean>(true);
 
   const handleStart = () => {
     setIsRunning(true);
@@ -47,7 +48,7 @@ const Timer: React.FC<TimerProps> = ({}) => {
         setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
     } else if (remainingTime === 0) {
-      showNotification();
+      if (showNotifications) showNotification();
     }
 
     return () => clearInterval(timer);
@@ -68,17 +69,15 @@ const Timer: React.FC<TimerProps> = ({}) => {
 
   const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
 
-  // TODO add settings for adjusting turn duration, and notifications
-
   return (
     <div className="flex flex-col h-min">
       <div className="flex items-center justify-center gap-4 mt-4 h-32">
         <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className={"countdown font-mono text-5xl"}>
-              {/* @ts-ignore */}
               <span
                 className={timerClass}
+                // @ts-ignore
                 style={{ "--value": minutes }}
               ></span>
             </span>
@@ -86,9 +85,10 @@ const Timer: React.FC<TimerProps> = ({}) => {
           </div>
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className={"countdown font-mono text-5xl"}>
-              {/* @ts-ignore */}
               <span
                 className={timerClass}
+                // @ts-ignore
+
                 style={{ "--value": seconds }}
               ></span>
             </span>
@@ -117,6 +117,15 @@ const Timer: React.FC<TimerProps> = ({}) => {
       >
         Edit Turn Duration
       </button>
+      <div className="flex items-center justify-center gap-4">
+        <label className="label">Show Notifications</label>
+        <input
+          type="checkbox"
+          className="toggle toggle-info"
+          checked={showNotifications}
+          onChange={() => setShowNotifications(!showNotifications)}
+        />
+      </div>
       <dialog id="turn_duration" className="modal">
         <TimerDurationForm onDurationSubmit={handleSetTurnDuration} />
       </dialog>
