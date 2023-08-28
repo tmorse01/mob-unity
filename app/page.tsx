@@ -6,7 +6,7 @@ import ThemeSwitcher from "./components/ThemeSelect";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-100">
-      <ThemeSwitcher className="flex-none" />
+      <ThemeSwitcher className="absolute top-2 right-2" />
       <Hero />
       <HomeContent />
       <Footer />
