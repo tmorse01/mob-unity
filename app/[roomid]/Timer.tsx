@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from "react";
 import TimerDurationForm from "./TimerDurationForm";
+import Logo from "../components/Logo";
 
 interface TimerProps {}
 
+const showNotification = () => {
+  if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+      new Notification("Time is up!", {
+        body: "Rotate the current roles.",
+        // icon: <Logo className="w-4 h-4" />,
+      });
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          new Notification("Time is up!", {
+            body: "Rotate the current roles.",
+          });
+        }
+      });
+    }
+  }
+};
+
 const Timer: React.FC<TimerProps> = ({}) => {
-  const [turnDuration, setTurnDuration] = useState<number>(420);
+  const [turnDuration, setTurnDuration] = useState<number>(12);
   const [isRunning, setIsRunning] = useState(false);
   const [remainingTime, setRemainingTime] = useState(turnDuration);
 
@@ -22,11 +42,12 @@ const Timer: React.FC<TimerProps> = ({}) => {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-
     if (isRunning && remainingTime > 0) {
       timer = setInterval(() => {
         setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
+    } else if (remainingTime === 0) {
+      showNotification();
     }
 
     return () => clearInterval(timer);
@@ -45,6 +66,8 @@ const Timer: React.FC<TimerProps> = ({}) => {
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
 
+  const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
+
   // TODO add settings for adjusting turn duration, and notifications
 
   return (
@@ -52,16 +75,22 @@ const Timer: React.FC<TimerProps> = ({}) => {
       <div className="flex items-center justify-center gap-4 mt-4 h-32">
         <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className={"countdown font-mono text-5xl"}>
               {/* @ts-ignore */}
-              <span style={{ "--value": minutes }}></span>
+              <span
+                className={timerClass}
+                style={{ "--value": minutes }}
+              ></span>
             </span>
             min
           </div>
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className="countdown font-mono text-5xl">
+            <span className={"countdown font-mono text-5xl"}>
               {/* @ts-ignore */}
-              <span style={{ "--value": seconds }}></span>
+              <span
+                className={timerClass}
+                style={{ "--value": seconds }}
+              ></span>
             </span>
             sec
           </div>

@@ -31,13 +31,15 @@ const CurrentRoles: React.FC<CurrentRolesProps> = ({
           </div>
         )}
       </div>
-      <div className="flex flex-row gap-8 items-center justify-center">
-        <h3 className="mb-0 mt-0">Mobsters</h3>
-        {mob?.map((mobster, i) => (
-          <div key={mobster + i} className="text-center">
-            <p>{mobster}</p>
-          </div>
-        ))}
+      <div className="container">
+        <h3 className="mb-0 mt-0 text-center">Mob</h3>
+        <div className="flex flex-row gap-8 items-center justify-center">
+          {mob?.map((mobster, i) => (
+            <div key={mobster + i} className="text-center">
+              <p>{mobster}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
