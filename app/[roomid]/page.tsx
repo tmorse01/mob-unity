@@ -78,7 +78,10 @@ const Room = () => {
               onAddMember={handleAddMember}
               onRemoveMember={handleRemoveMember}
             />
+            {/*Add notes section for shared notes between the team*/}
+
             <GoalsSection />
+            {/*Add retro section for after all goals are complete*/}
           </div>
         </div>
       </div>

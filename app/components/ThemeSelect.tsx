@@ -34,6 +34,8 @@ const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
   return (
     <select
       className={"select select-bordered text-primary " + className}
+      name="select-theme"
+      title="Select Theme"
       data-choose-theme
       value={selectedTheme}
       onChange={(e) => handleThemeChange(e.target.value)}

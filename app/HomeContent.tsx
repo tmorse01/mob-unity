@@ -1,7 +1,7 @@
 const HomeContent = () => {
   return (
-    <div className="bg-base-300 w-full p-16">
-      <div className="grid grid-cols-2 gap-8">
+    <div className="w-full p-16 bg-base-300">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div className="prose">
           <h2 className="mb-4 text-2xl font-semibold">
             Unleash Collective Brilliance
