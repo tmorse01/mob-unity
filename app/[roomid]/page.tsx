@@ -44,10 +44,11 @@ const Room = () => {
         },
       })
       .then((response) => {
-        const names = response.data.teammembers.map(
+        const teamMembers = response.data.teammembers.map(
           (member: TeamMember) => member.name
         );
-        setTeamMembers(names);
+        setTeamMembers(teamMembers);
+        setCurrentRoles(initRoles(teamMembers));
       });
   }, []);
 
@@ -61,7 +62,16 @@ const Room = () => {
   };
 
   const handleAddMember = (member: string) => {
-    setTeamMembers((prevMembers) => [...prevMembers, member]);
+    axios
+      .post("/api/teams", {
+        roomid: roomId,
+      })
+      .then((response) => {
+        setTeamMembers((prevMembers) => [...prevMembers, member]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleRemoveMember = (member: string) => {
