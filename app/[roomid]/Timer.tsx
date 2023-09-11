@@ -74,7 +74,7 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className={"countdown font-mono text-5xl"}>
@@ -117,7 +117,7 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
         </button>
       </div>
 
-      <div className="prose flex items-center gap-4">
+      <div className="prose flex flex-wrap items-center gap-4">
         <button
           className="btn btn-secondary btn-sm"
           // @ts-ignore
@@ -125,13 +125,15 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
         >
           Edit Turn Duration
         </button>
-        <label className="label">Show Notifications</label>
-        <input
-          type="checkbox"
-          className="toggle toggle-info"
-          checked={showNotifications}
-          onChange={() => setShowNotifications(!showNotifications)}
-        />
+        <div className="flex flex-row items-center gap-4">
+          <label className="label">Show Notifications</label>
+          <input
+            type="checkbox"
+            className="toggle toggle-info"
+            checked={showNotifications}
+            onChange={() => setShowNotifications(!showNotifications)}
+          />
+        </div>
       </div>
       <dialog id="turn_duration" className="modal">
         <TimerDurationForm onDurationSubmit={handleSetTurnDuration} />

@@ -22,8 +22,8 @@ const TeamSection: React.FC<TeamSectionProps> = ({
   };
 
   return (
-    <div className="prose container mx-auto my-4">
-      <div className="mt-2">
+    <div className="prose">
+      <div className="flex flex-wrap gap-4 mt-2">
         <input
           type="text"
           value={newMember}
