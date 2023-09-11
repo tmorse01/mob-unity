@@ -14,7 +14,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
 }) => {
   const [newMember, setNewMember] = useState("");
 
-  const handleAddMember = () => {
+  const handleAddMember = async () => {
     if (newMember.trim() !== "") {
       onAddMember(newMember);
       setNewMember("");
@@ -23,6 +23,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
 
   return (
     <div className="prose">
+      <h1 className="font-semibold mb-4">Team</h1>
       <div className="flex flex-wrap gap-4 mt-2">
         <input
           type="text"
@@ -35,7 +36,6 @@ const TeamSection: React.FC<TeamSectionProps> = ({
           Add Member
         </button>
       </div>
-      <h2 className="text-lg font-semibold mb-4">Team</h2>
       <ul className="list-disc mb-8">
         {teamMembers.map((member, index) => (
           <li key={index} className="ml-8 mb-2">

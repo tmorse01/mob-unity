@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormData {
-  room_id: string;
+  roomid: string;
 }
 
 export default function CreateRoomForm() {
@@ -15,12 +15,12 @@ export default function CreateRoomForm() {
   const router = useRouter();
 
   const onSubmit = async (data: FormData) => {
-    const room_id = data.room_id;
+    const roomid = data.roomid;
     try {
       const createdts = Date.now();
-      const response = await axios.post("/api/rooms", { room_id, createdts });
+      const response = await axios.post("/api/rooms", { roomid, createdts });
       if (response.data.ok === false) throw new Error(response.data.message);
-      router.push("/" + room_id);
+      router.push("/" + roomid);
     } catch (error: any) {
       // Handle error
       console.error(error);
@@ -40,7 +40,7 @@ export default function CreateRoomForm() {
             type="text"
             className="max-w-full px-4 py-2 input input-bordered md:col-span-1"
             placeholder="Create or join a room..."
-            {...register("room_id")}
+            {...register("roomid")}
           />
           <button
             type="submit"

@@ -50,8 +50,8 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
   };
 
   return (
-    <div className="prose p-4">
-      <div className="prose mb-16">
+    <div className="prose">
+      <div className="mb-16">
         <h1>{"Current Goal"}</h1>
         <h2>{currentGoal?.title}</h2>
         <p>{currentGoal?.description}</p>
@@ -71,40 +71,43 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
       </div>
       <div className="space-y-2">
         {goals.map((goal) => (
-          <div
-            key={goal.id}
-            className="flex gap-4 items-center justify-between border-b"
-          >
-            <input
-              type="checkbox"
-              checked={goal.complete}
-              className="checkbox"
-              onChange={() => handleToggleComplete(goal.id)}
-            />
-            <div className="flex-grow">
-              <h2 className="text-lg font-semibold">{goal.title}</h2>
-              <p className="flex-grow">{goal.description}</p>
-            </div>
-            <button
-              className="btn btn-circle btn-xs btn-outline"
-              onClick={() => handleRemoveGoal(goal.id)}
+          <>
+            <div
+              key={goal.id}
+              className="flex gap-4 items-center justify-between"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <input
+                type="checkbox"
+                checked={goal.complete}
+                className="checkbox"
+                onChange={() => handleToggleComplete(goal.id)}
+              />
+              <div className="flex-grow">
+                <h2 className="text-lg font-semibold">{goal.title}</h2>
+                <p className="flex-grow">{goal.description}</p>
+              </div>
+              <button
+                className="btn btn-circle btn-xs btn-outline"
+                onClick={() => handleRemoveGoal(goal.id)}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="divider" />
+          </>
         ))}
       </div>
     </div>

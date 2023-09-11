@@ -6,16 +6,14 @@ import Timer from "./Timer";
 import CurrentRoles from "./CurrentRole";
 import { Roles } from "../types";
 import Footer from "../components/Footer";
-import next from "next/types";
+import axios from "axios";
+import { useParams } from "next/navigation";
 
-const defaultTeamMembers = [
-  "Taylor",
-  "Steve",
-  "Emmanuel",
-  "Tyler",
-  "Michael",
-  "Alan",
-];
+interface TeamMember {
+  name: string;
+  roomid: string;
+  _id: string;
+}
 
 const initRoles = (teamMembers: string[]) => {
   const shuffledMembers = [...teamMembers].sort(() => Math.random() - 0.5);
@@ -29,10 +27,29 @@ const initRoles = (teamMembers: string[]) => {
 };
 
 const Room = () => {
-  const [teamMembers, setTeamMembers] = useState<string[]>(defaultTeamMembers);
+  const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [currentRoles, setCurrentRoles] = useState<Roles>(
     initRoles(teamMembers)
   );
+
+  const params = useParams();
+  const roomId = params.roomid;
+
+  useEffect(() => {
+    // get initial team members from roomid
+    axios
+      .get("/api/teams", {
+        params: {
+          roomid: roomId,
+        },
+      })
+      .then((response) => {
+        const names = response.data.teammembers.map(
+          (member: TeamMember) => member.name
+        );
+        setTeamMembers(names);
+      });
+  }, []);
 
   const rotateRoles = () => {
     const newRoles = { ...currentRoles };
