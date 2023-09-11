@@ -23,7 +23,6 @@ const initRoles = (teamMembers: string[]) => {
   const newRoles: Roles = {
     driver: shuffledMembers.pop(),
     navigator: shuffledMembers.pop(),
-    facilitator: shuffledMembers.pop(),
     mob: shuffledMembers,
   };
   return newRoles;
@@ -38,8 +37,7 @@ const Room = () => {
   const rotateRoles = () => {
     const newRoles = { ...currentRoles };
     newRoles.driver = currentRoles.navigator;
-    newRoles.navigator = currentRoles.facilitator;
-    newRoles.facilitator = newRoles.mob.shift();
+    newRoles.navigator = newRoles.mob.shift();
     if (currentRoles.driver !== undefined)
       newRoles.mob.push(currentRoles.driver);
     setCurrentRoles(newRoles);
@@ -58,33 +56,22 @@ const Room = () => {
   };
 
   return (
-    <div>
-      <div className="grid gap-4 m-8">
-        <div className="p-4">
-          <div className="grid sm:grid-cols-1 md:grid-cols-2">
-            <Timer onTimeUp={rotateRoles} />
-            <CurrentRoles
-              driver={currentRoles.driver}
-              navigator={currentRoles.navigator}
-              facilitator={currentRoles.facilitator}
-              mob={currentRoles.mob}
-            />
-          </div>
-        </div>
-        <div className="p-4">
-          <div className="grid sm:grid-cols-1 md:grid-cols-2">
-            <TeamSection
-              teamMembers={teamMembers}
-              onAddMember={handleAddMember}
-              onRemoveMember={handleRemoveMember}
-            />
-            {/*Add notes section for shared notes between the team*/}
+    <div className="grid m-16 gap-16 md:grid-cols-1 lg:grid-cols-2">
+      <Timer onTimeUp={rotateRoles} />
+      <CurrentRoles
+        driver={currentRoles.driver}
+        navigator={currentRoles.navigator}
+        mob={currentRoles.mob}
+      />
+      <TeamSection
+        teamMembers={teamMembers}
+        onAddMember={handleAddMember}
+        onRemoveMember={handleRemoveMember}
+      />
+      {/*Add notes section for shared notes between the team*/}
 
-            <GoalsSection />
-            {/*Add retro section for after all goals are complete*/}
-          </div>
-        </div>
-      </div>
+      <GoalsSection />
+      {/*Add retro section for after all goals are complete*/}
       <Footer />
     </div>
   );

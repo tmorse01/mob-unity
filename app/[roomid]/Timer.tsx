@@ -73,8 +73,8 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
   const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
 
   return (
-    <div className="flex flex-col h-min">
-      <div className="flex items-center justify-center gap-4 mt-4 h-32">
+    <div className="flex flex-col gap-8">
+      <div className="flex items-center gap-4">
         <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
           <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
             <span className={"countdown font-mono text-5xl"}>
@@ -117,7 +117,7 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
         </button>
       </div>
 
-      <div className="prose flex items-center justify-center gap-4">
+      <div className="prose flex items-center gap-4">
         <button
           className="btn btn-secondary btn-sm"
           // @ts-ignore
