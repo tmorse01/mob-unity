@@ -70,8 +70,8 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
         </dialog>
       </div>
       <div className="space-y-2">
-        {goals.map((goal) => (
-          <>
+        {goals.map((goal, index) => (
+          <React.Fragment key={index}>
             <div
               key={goal.id}
               className="flex gap-4 items-center justify-between"
@@ -107,7 +107,7 @@ const GoalsSection: React.FC<GoalsSectionProps> = () => {
               </button>
             </div>
             <div className="divider" />
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

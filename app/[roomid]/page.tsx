@@ -65,8 +65,11 @@ const Room = () => {
     axios
       .post("/api/teams", {
         roomid: roomId,
+        name: member,
       })
       .then((response) => {
+        console.log("response: ", response);
+        if (!response.data.ok) throw new Error(response.data.message);
         setTeamMembers((prevMembers) => [...prevMembers, member]);
       })
       .catch((error) => {
