@@ -1,5 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import { pusherClient } from "@/lib/pusher";
+import { useParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface TeamSectionProps {
   teamMembers: string[];
@@ -13,6 +15,18 @@ const TeamSection: React.FC<TeamSectionProps> = ({
   onRemoveMember,
 }) => {
   const [newMember, setNewMember] = useState("");
+
+  const params = useParams();
+  const roomId = params.roomid;
+  
+  useEffect(() => {
+    console.log("subscribe")
+    const channel = pusherClient.subscribe(`room__${roomId}`)
+    channel.bind('add_team_member', function(data: any) {
+      console.log("helloworld")
+      alert(JSON.stringify(data));
+    }); 
+  }, [])
 
   const handleAddMember = async () => {
     if (newMember.trim() !== "") {
