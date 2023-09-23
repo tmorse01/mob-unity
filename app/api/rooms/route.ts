@@ -31,16 +31,17 @@ export async function POST(request: NextRequest) {
       status: 500,
     });
   }
-  const getUpdatedRoomResponse = await getRoom(client, body);
-  if (getUpdatedRoomResponse.ok === false) {
-    return getUpdatedRoomResponse;
-  } else {
+  if (body.action !== "getRoom") {
+    const getUpdatedRoomResponse = await getRoom(client, body);
     const updatedRoomData = await getUpdatedRoomResponse.json();
     pusherServer.trigger(`room__${body.roomid}`, "update_room", {
       room: updatedRoomData.data,
     });
-    return response;
+    if (getUpdatedRoomResponse.ok === false) {
+      return getUpdatedRoomResponse;
+    }
   }
+  return response;
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
