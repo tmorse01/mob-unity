@@ -44,12 +44,12 @@ export async function POST(request: NextRequest) {
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
+  const { roomid } = body;
+  console.log("getRoom: ", roomid);
   try {
     const db = client.db("mob-unity");
-    const response = await db
-      .collection("rooms")
-      .findOne({ roomid: body.roomid });
-
+    const response = await db.collection("rooms").findOne({ roomid: roomid });
+    console.log("getRoomResponse: ", response);
     return NextResponse.json({
       ok: true,
       message: "Room found successfully",
