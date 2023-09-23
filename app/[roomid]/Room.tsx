@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
+import { pusherClient } from "@/lib/pusher";
 
 import GoalsSection from "./GoalSection";
 import TeamSection from "./TeamSection";
 import Timer from "./Timer";
 import CurrentRoles from "./CurrentRole";
 
-import { defaultRoom, RoomData } from "@/types/room";
+import { RoomData, TeamMember } from "@/types/room";
 
 interface RoomProps {
   roomData: RoomData;
@@ -17,6 +18,15 @@ const Room = ({ roomData, roomId }: RoomProps) => {
   const [room, setRoom] = useState<RoomData>(roomData);
   console.log("room: ", room);
 
+  useEffect(() => {
+    console.log("subscribe");
+    const channel = pusherClient.subscribe(`room__${roomId}`);
+    channel.bind("add_team_member", function (data: any) {
+      console.log("helloworld");
+      alert(JSON.stringify(data));
+    });
+  }, []);
+
   const rotateRoles = () => {
     // const newRoles = { ...currentRoles };
     // newRoles.driver = currentRoles.navigator;
@@ -26,28 +36,8 @@ const Room = ({ roomData, roomId }: RoomProps) => {
     // setCurrentRoles(newRoles);
   };
 
-  const handleAddMember = (member: string) => {
-    // axios
-    //   .post("/api/teams", {
-    //     roomid: roomId,
-    //     name: member,
-    //   })
-    //   .then((response) => {
-    //     console.log("response: ", response);
-    //     if (!response.data.ok) throw new Error(response.data.message);
-    //     // setTeamMembers((prevMembers) => [...prevMembers, member]);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  };
-
-  const handleRemoveMember = (member: string) => {
-    // const indexOfMember = teamMembers.findIndex(
-    //   (teamMember) => teamMember === member
-    // );
-    // const updatedMembers = teamMembers.filter((_, i) => i !== indexOfMember);
-    // setTeamMembers(updatedMembers);
+  const handleMemberChange = async (members: TeamMember[]) => {
+    setRoom({ ...room, ...{ teammembers: members } });
   };
 
   return (
@@ -55,9 +45,9 @@ const Room = ({ roomData, roomId }: RoomProps) => {
       <Timer onTimeUp={rotateRoles} />
       <CurrentRoles teamMembers={room.teammembers} />
       <TeamSection
+        roomId={roomId}
         teamMembers={room.teammembers}
-        onAddMember={handleAddMember}
-        onRemoveMember={handleRemoveMember}
+        handleMemberChange={handleMemberChange}
       />
       {/*Add notes section for shared notes between the team*/}
 

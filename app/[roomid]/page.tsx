@@ -12,12 +12,14 @@ import Room from "./Room";
 // };
 
 async function getRoomData(roomId: string) {
-  const response = await fetch(`http://localhost:3000/api/rooms/`, {
+  // TODO implement smart caching with on demand revalidation
+  const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ action: "getRoom", roomid: roomId }),
+    cache: "no-store",
   });
   return response.json();
 }
@@ -27,7 +29,6 @@ const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   // const [currentRoles, setCurrentRoles] = useState<Roles>(
   //   initRoles(teamMembers)
   // );
-
   const roomId = params.roomid;
   const response = await getRoomData(roomId);
   const roomData = response.data;

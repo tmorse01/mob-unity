@@ -1,4 +1,5 @@
 export interface TeamMember {
+  memberid: string;
   name: string;
   role: string;
 }
@@ -22,28 +23,43 @@ export interface RoomData {
   timer: Timer;
 }
 
+export type AddTeamRequestBody = {
+  roomid: string;
+  member: TeamMember;
+};
+
+export type DeleteTeamRequestBody = {
+  roomid: string;
+  memberid: string;
+};
+
 const exampleJson: RoomData = {
   roomid: "taylor",
   teammembers: [
     {
       name: "Taylor",
       role: "Driver",
+      memberid: "7d4c2e8c-cfd5-4e5e-8b0d-eb2c6c31f146",
     },
     {
       name: "Shawn",
       role: "Navigator",
+      memberid: "c38f2eb2-5453-4d01-87e6-7ff2ad2b1b4b",
     },
     {
       name: "Thomas",
       role: "Mob",
+      memberid: "e0c5d13d-5411-47e1-badf-4a21563e262c",
     },
     {
       name: "Steve",
       role: "Mob",
+      memberid: "d9c3d1d8-38f3-4ebd-92e6-65122df21ef4",
     },
     {
       name: "Sarah",
       role: "Mob",
+      memberid: "e9ed2ed2-9be4-4ed0-a6e2-0e4a5f02c6c3",
     },
   ],
   goals: [
