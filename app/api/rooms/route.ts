@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
   const body = await request.json();
+  console.log("POST", body);
   const client = await clientPromise;
   var response;
   if (body.action === "addRoom") {
