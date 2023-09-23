@@ -1,8 +1,8 @@
 "use client";
+import { Goal } from "@/types/room";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
-import { Goal } from "../types";
 
 interface NewGoalFormProps {
   onAddGoal: (newGoal: Goal) => void;
@@ -18,7 +18,7 @@ const NewGoalForm: React.FC<NewGoalFormProps> = ({ onAddGoal }) => {
 
   const onSubmit = (data: FormData) => {
     const newGoal = {
-      id: uuidv4(),
+      goalid: uuidv4(),
       ...data,
       complete: false,
     };
