@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
+import { pusherServer } from "@/lib/pusher";
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,6 +9,10 @@ export async function POST(request: NextRequest) {
     const client = await clientPromise;
     const db = client.db("mob-unity");
     await db.collection("teams").insertOne({ roomid, name });
+    console.log("trigger")
+    pusherServer.trigger(`room__${roomid}`, "add_team_member", {
+      message: "hello world"
+    });
     return NextResponse.json({
       ok: true,
       message: "Room created successfully",
