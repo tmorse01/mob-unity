@@ -14,15 +14,19 @@ import Room from "./Room";
 
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
-  const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
+  return fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
     method: "POST",
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ action: "getRoom", roomid: roomId }),
     cache: "no-store",
-  });
-  return response.json();
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.log(error);
+      return defaultRoom;
+    });
 }
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
