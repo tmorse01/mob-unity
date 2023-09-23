@@ -1,4 +1,5 @@
 "use client";
+import { defaultRoom } from "@/types/room";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -18,7 +19,13 @@ export default function CreateRoomForm() {
     const roomid = data.roomid;
     try {
       const createdts = Date.now();
-      const response = await axios.post("/api/rooms", { roomid, createdts });
+      // covert to fetch potentially for nextjs
+      const response = await axios.post("/api/rooms", {
+        action: "addRoom",
+        ...defaultRoom,
+        roomid,
+        createdts,
+      });
       if (response.data.ok === false) throw new Error(response.data.message);
       router.push("/" + roomid);
     } catch (error: any) {

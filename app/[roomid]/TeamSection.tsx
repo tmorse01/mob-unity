@@ -18,15 +18,15 @@ const TeamSection: React.FC<TeamSectionProps> = ({
 
   const params = useParams();
   const roomId = params.roomid;
-  
-  useEffect(() => {
-    console.log("subscribe")
-    const channel = pusherClient.subscribe(`room__${roomId}`)
-    channel.bind('add_team_member', function(data: any) {
-      console.log("helloworld")
-      alert(JSON.stringify(data));
-    }); 
-  }, [])
+
+  // useEffect(() => {
+  //   console.log("subscribe")
+  //   const channel = pusherClient.subscribe(`room__${roomId}`)
+  //   channel.bind('add_team_member', function(data: any) {
+  //     console.log("helloworld")
+  //     alert(JSON.stringify(data));
+  //   });
+  // }, [])
 
   const handleAddMember = async () => {
     if (newMember.trim() !== "") {

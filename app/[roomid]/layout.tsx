@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function RoomLayout({
   children, // will be a page or nested layout
@@ -10,6 +11,7 @@ export default function RoomLayout({
       <Header />
       {/* <nav></nav> */}
       {children}
+      <Footer />
     </section>
   );
 }
