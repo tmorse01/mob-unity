@@ -19,6 +19,8 @@ const Room = ({ roomData, roomId }: RoomProps) => {
   // console.log("room: ", room);
 
   useEffect(() => {
+    // implement inactivity timeout for connection
+
     const channel = pusherClient.subscribe(`room__${roomId}`);
     channel.bind("update_room", function ({ room }: { room: RoomData }) {
       setRoom(room);

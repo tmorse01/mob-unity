@@ -1,3 +1,4 @@
+import { defaultRoom } from "@/types/room";
 import Room from "./Room";
 
 // const initRoles = (teamMembers: string[]) => {
@@ -30,10 +31,10 @@ const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   //   initRoles(teamMembers)
   // );
   const roomId = params.roomid;
-  const response = await getRoomData(roomId);
-  const roomData = response.data;
-  if (roomData === undefined) return <div>Room not found</div>;
-  return <Room roomData={response.data} roomId={roomId} />;
+  // const response = await getRoomData(roomId);
+  // const roomData = response.data;
+  // if (roomData === undefined) return <div>Room not found</div>;
+  return <Room roomData={defaultRoom} roomId={roomId} />;
 };
 
 export default RoomPage;
