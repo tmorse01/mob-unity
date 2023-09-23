@@ -26,15 +26,11 @@ async function getRoomData(roomId: string) {
 }
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
-  // const [teamMembers, setTeamMembers] = useState<string[]>([]);
-  // const [currentRoles, setCurrentRoles] = useState<Roles>(
-  //   initRoles(teamMembers)
-  // );
   const roomId = params.roomid;
-  // const response = await getRoomData(roomId);
-  // const roomData = response.data;
-  // if (roomData === undefined) return <div>Room not found</div>;
-  return <Room roomData={defaultRoom} roomId={roomId} />;
+  const response = await getRoomData(roomId);
+  const roomData = response.data;
+  if (roomData === undefined) return <div>Room not found</div>;
+  return <Room roomData={roomData} roomId={roomId} />;
 };
 
 export default RoomPage;
