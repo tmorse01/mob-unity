@@ -1,10 +1,11 @@
 "use client";
 import { pusherClient } from "@/lib/pusher";
+import { TeamMember } from "@/types/room";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface TeamSectionProps {
-  teamMembers: string[];
+  teamMembers: TeamMember[];
   onAddMember: (member: string) => void;
   onRemoveMember: (member: string) => void;
 }
@@ -54,10 +55,10 @@ const TeamSection: React.FC<TeamSectionProps> = ({
         {teamMembers.map((member, index) => (
           <li key={index} className="ml-8 mb-2">
             <div className="flex gap-4">
-              {member}
+              {member.name}
               <button
                 className="btn btn-circle btn-xs btn-outline"
-                onClick={(e) => onRemoveMember(member)}
+                onClick={(e) => onRemoveMember(member.name)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

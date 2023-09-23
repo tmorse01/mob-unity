@@ -53,17 +53,12 @@ const Room = ({ roomData, roomId }: RoomProps) => {
   return (
     <div className="grid m-4 lg:m-16 gap-4 g:gap-16 grid-cols-1 lg:grid-cols-2">
       <Timer onTimeUp={rotateRoles} />
-      {/* <CurrentRoles
-        teamMembers={room.teammembers}
-        // driver={currentRoles.driver}
-        // navigator={currentRoles.navigator}
-        // mob={currentRoles.mob}
-      />
+      <CurrentRoles teamMembers={room.teammembers} />
       <TeamSection
         teamMembers={room.teammembers}
         onAddMember={handleAddMember}
         onRemoveMember={handleRemoveMember}
-      /> */}
+      />
       {/*Add notes section for shared notes between the team*/}
 
       <GoalsSection defaultGoals={room.goals} />
