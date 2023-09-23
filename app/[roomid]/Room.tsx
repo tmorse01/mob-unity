@@ -16,14 +16,12 @@ interface RoomProps {
 
 const Room = ({ roomData, roomId }: RoomProps) => {
   const [room, setRoom] = useState<RoomData>(roomData);
-  console.log("room: ", room);
+  // console.log("room: ", room);
 
   useEffect(() => {
-    console.log("subscribe");
     const channel = pusherClient.subscribe(`room__${roomId}`);
-    channel.bind("add_team_member", function (data: any) {
-      console.log("helloworld");
-      alert(JSON.stringify(data));
+    channel.bind("update_room", function ({ room }: { room: RoomData }) {
+      setRoom(room);
     });
   }, []);
 

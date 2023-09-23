@@ -15,32 +15,36 @@ export async function POST(request: NextRequest) {
   // rotateRoles
   const body = await request.json();
   const client = await clientPromise;
-
-  console.log("trigger");
-  pusherServer.trigger(`room__${body.roomid}`, "update_room", {
-    message: "hello world",
-  });
-
+  var response;
   if (body.action === "addRoom") {
-    return await addRoom(client, body);
+    response = await addRoom(client, body);
   } else if (body.action === "getRoom") {
-    return await getRoom(client, body);
+    response = await getRoom(client, body);
   } else if (body.action === "addTeamMember") {
-    return await addTeamMember(client, body);
+    response = await addTeamMember(client, body);
   } else if (body.action === "deleteTeamMember") {
-    return await deleteTeamMember(client, body);
+    response = await deleteTeamMember(client, body);
   } else {
-    return NextResponse.json({
+    response = NextResponse.json({
       ok: false,
       message: "Invalid action",
       status: 500,
     });
   }
+  const getUpdatedRoomResponse = await getRoom(client, body);
+  if (getUpdatedRoomResponse.ok === false) {
+    return getUpdatedRoomResponse;
+  } else {
+    const updatedRoomData = await getUpdatedRoomResponse.json();
+    pusherServer.trigger(`room__${body.roomid}`, "update_room", {
+      room: updatedRoomData.data,
+    });
+    return response;
+  }
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
   try {
-    console.log("response from getRoom", body.roomid);
     const db = client.db("mob-unity");
     const response = await db
       .collection("rooms")
