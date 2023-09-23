@@ -23,6 +23,9 @@ const Room = ({ roomData, roomId }: RoomProps) => {
     channel.bind("update_room", function ({ room }: { room: RoomData }) {
       setRoom(room);
     });
+    return () => {
+      pusherClient.disconnect();
+    };
   }, []);
 
   const rotateRoles = () => {
