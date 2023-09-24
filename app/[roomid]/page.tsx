@@ -15,20 +15,12 @@ import axios from "axios";
 
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
-  return axios
-    .post(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-      action: "getRoom",
-      roomid: roomId,
-    })
-    .then((response) => {
-      console.log("Response: ", response.data);
-      return response.data.data;
-    })
-    .catch((error) => {
-      console.log(error);
-      return error;
-    });
-
+  const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/hello/`, {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+  console.log("testing an api: ", response);
   // return fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
   //   method: "POST",
   //   headers: {
@@ -40,8 +32,9 @@ async function getRoomData(roomId: string) {
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
-  const roomData = await getRoomData(roomId);
-  console.log("roomData: ", roomData);
+  const roomData = defaultRoom;
+  await getRoomData(roomId);
+  // console.log("roomData: ", roomData);
   if (roomData === undefined) return <div>Room not found</div>;
   return <Room roomData={roomData} roomId={roomId} />;
 };
