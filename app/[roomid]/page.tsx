@@ -20,13 +20,14 @@ async function getRoomData(roomId: string) {
     body: JSON.stringify({ action: "getRoom", roomid: roomId }),
   })
     .then((res) => res.json())
+    .then((res) => (res.ok ? res.data : undefined))
     .catch((err) => console.log(err));
 }
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
   const roomData = await getRoomData(roomId);
-  // console.log("roomData: ", roomData);
+  console.log("roomData: ", roomData);
   if (roomData === undefined) return <div>Room not found</div>;
   return <Room roomData={roomData} roomId={roomId} />;
 };
