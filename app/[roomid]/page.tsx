@@ -26,7 +26,7 @@ async function getRoomData(roomId: string) {
     })
     .catch((error) => {
       console.log(error);
-      return defaultRoom;
+      return error;
     });
 
   // return fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
@@ -41,6 +41,7 @@ async function getRoomData(roomId: string) {
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
   const roomData = await getRoomData(roomId);
+  console.log("roomData: ", roomData);
   if (roomData === undefined) return <div>Room not found</div>;
   return <Room roomData={roomData} roomId={roomId} />;
 };
