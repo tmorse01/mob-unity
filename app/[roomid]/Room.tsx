@@ -20,22 +20,6 @@ const Room = ({ roomData, roomId }: RoomProps) => {
 
   useEffect(() => {
     // implement inactivity timeout for connection
-    console.log("room useEffect");
-    async function getRoomData(roomId: string) {
-      // TODO implement smart caching with on demand revalidation
-      return await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-        method: "POST",
-        body: JSON.stringify({ action: "getRoom", roomid: roomId }),
-      })
-        .then((res) => {
-          console.log("res: ", res);
-          return res.json();
-        })
-        .then((res) => (res.ok ? res.data : undefined))
-        .catch((err) => console.log(err));
-    }
-    const response = getRoomData(roomId);
-    console.log("room response: ", response);
     const channel = pusherClient.subscribe(`room__${roomId}`);
     channel.bind("update_room", function ({ room }: { room: RoomData }) {
       setRoom(room);
