@@ -1,6 +1,5 @@
 import { defaultRoom } from "@/types/room";
 import Room from "./Room";
-import axios from "axios";
 
 // const initRoles = (teamMembers: string[]) => {
 //   const shuffledMembers = [...teamMembers].sort(() => Math.random() - 0.5);

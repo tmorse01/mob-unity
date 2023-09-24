@@ -41,14 +41,14 @@ export async function POST(request: NextRequest) {
       status: 500,
     });
   }
-  const getUpdatedRoomResponse = await getRoom(client, body);
-  const updatedRoomData = await getUpdatedRoomResponse.json();
-  pusherServer.trigger(`room__${body.roomid}`, "update_room", {
-    room: updatedRoomData.data,
-  });
-  if (getUpdatedRoomResponse.ok === false) {
-    return getUpdatedRoomResponse;
-  }
+  // const getUpdatedRoomResponse = await getRoom(client, body);
+  // const updatedRoomData = await getUpdatedRoomResponse.json();
+  // pusherServer.trigger(`room__${body.roomid}`, "update_room", {
+  //   room: updatedRoomData.data,
+  // });
+  // if (getUpdatedRoomResponse.ok === false) {
+  //   return getUpdatedRoomResponse;
+  // }
 
   return response;
 }
