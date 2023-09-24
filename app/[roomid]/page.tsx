@@ -17,9 +17,6 @@ async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
   return await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ action: "getRoom", roomid: roomId }),
   })
     .then((res) => res.json())
