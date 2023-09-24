@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
   //   return getUpdatedRoomResponse;
   // }
 
-  return response;
+  // return response;
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
