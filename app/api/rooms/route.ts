@@ -5,6 +5,15 @@ import { pusherServer } from "@/lib/pusher";
 import clientPromise from "@/lib/mongodb";
 import { AddTeamRequestBody, DeleteTeamRequestBody } from "@/types/room";
 
+export async function GET() {
+  const greeting = "Hello from rooms api";
+  const json = {
+    greeting,
+  };
+
+  return NextResponse.json(json);
+}
+
 export async function POST(request: NextRequest) {
   // make an update to the room
   // case per action like
