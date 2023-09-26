@@ -24,7 +24,7 @@ async function getRoomData(roomId: string) {
       throw new Error(`Request failed with status ${response.status}`);
 
     const responseData = await response.json();
-    return responseData;
+    return responseData.data;
   } catch (error) {
     console.error("Error: ", error);
     throw error;
@@ -34,6 +34,7 @@ async function getRoomData(roomId: string) {
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
   const roomData = await getRoomData(roomId);
+  console.log("roomData: ", roomData);
   if (roomData === undefined) return <div>Room not found</div>;
   return <Room roomData={roomData} roomId={roomId} />;
 };
