@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
-  const body = await request.json();
-  console.log("POST", body);
+  // const body = await request.json();
+  // console.log("POST", body);
   // const client = await clientPromise;
   var response;
   response = NextResponse.json({
