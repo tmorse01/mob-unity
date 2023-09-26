@@ -18,11 +18,11 @@ async function getRoomData(roomId: string) {
   try {
     const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
     const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // body: requestBody,
+      body: requestBody,
     });
 
     if (!response.ok) {
