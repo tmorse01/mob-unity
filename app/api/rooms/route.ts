@@ -29,45 +29,42 @@ export async function POST(request: Request) {
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
-  // console.log("env stuff", { env: process.env });
-  const data = await request.json();
-  return NextResponse.json(data);
 
-  // const body = await request.json();
-  // console.log("POST", body);
-  // const client = await clientPromise;
-  // var response;
-  // response = NextResponse.json({
-  //   ok: false,
-  //   message: "Invalid action",
-  //   status: 500,
-  // });
+  const body = await request.json();
+  console.log("POST", body);
+  const client = await clientPromise;
+  var response;
+  response = NextResponse.json({
+    ok: false,
+    message: "Invalid action",
+    status: 500,
+  });
 
-  // if (body.action === "addRoom") {
-  //   response = await addRoom(client, body);
-  // } else if (body.action === "getRoom") {
-  //   response = await getRoom(client, body);
-  // } else if (body.action === "addTeamMember") {
-  //   response = await addTeamMember(client, body);
-  // } else if (body.action === "deleteTeamMember") {
-  //   response = await deleteTeamMember(client, body);
-  // } else {
-  //   response = NextResponse.json({
-  //     ok: false,
-  //     message: "Invalid action",
-  //     status: 500,
-  //   });
-  // }
-  // const getUpdatedRoomResponse = await getRoom(client, body);
-  // const updatedRoomData = await getUpdatedRoomResponse.json();
-  // pusherServer.trigger(`room__${body.roomid}`, "update_room", {
-  //   room: updatedRoomData.data,
-  // });
-  // if (getUpdatedRoomResponse.ok === false) {
-  //   return getUpdatedRoomResponse;
-  // }
+  if (body.action === "addRoom") {
+    response = await addRoom(client, body);
+  } else if (body.action === "getRoom") {
+    response = await getRoom(client, body);
+  } else if (body.action === "addTeamMember") {
+    response = await addTeamMember(client, body);
+  } else if (body.action === "deleteTeamMember") {
+    response = await deleteTeamMember(client, body);
+  } else {
+    response = NextResponse.json({
+      ok: false,
+      message: "Invalid action",
+      status: 500,
+    });
+  }
+  const getUpdatedRoomResponse = await getRoom(client, body);
+  const updatedRoomData = await getUpdatedRoomResponse.json();
+  pusherServer.trigger(`room__${body.roomid}`, "update_room", {
+    room: updatedRoomData.data,
+  });
+  if (getUpdatedRoomResponse.ok === false) {
+    return getUpdatedRoomResponse;
+  }
 
-  // return response;
+  return response;
 }
 
 async function getRoom(client: MongoClient, roomid: string) {
