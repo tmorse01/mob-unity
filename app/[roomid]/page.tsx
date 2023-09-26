@@ -14,13 +14,28 @@ import Room from "./Room";
 
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
-  return await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-    method: "POST",
-    body: JSON.stringify({ action: "getRoom", roomid: roomId }),
-  })
-    .then((res) => res.json())
-    // .then((res) => (res.ok ? res.data : undefined))
-    .catch((err) => console.log(err));
+  try {
+    const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
+    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": Buffer.byteLength(requestBody).toString(),
+      },
+      body: requestBody,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log("Response data: ", responseData);
+    return responseData;
+  } catch (error) {
+    console.error("Error: ", error);
+    throw error; // You may want to handle the error in a different way
+  }
 }
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
