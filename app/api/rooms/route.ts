@@ -58,13 +58,13 @@ async function getRoom(client: MongoClient, body: { roomid: string }) {
   console.log("getRoom: ", roomid);
   try {
     const db = client.db("mob-unity");
-    const response = await db.collection("rooms").findOne({ roomid: roomid });
+    // const response = await db.collection("rooms").findOne({ roomid: roomid });
     // console.log("getRoomResponse: ", response);
     return NextResponse.json({
       ok: true,
       message: "Room found successfully",
       status: 200,
-      data: response,
+      data: { here: "fucker" },
     });
   } catch (error) {
     return NextResponse.json({
