@@ -5,13 +5,20 @@ import { pusherServer } from "@/lib/pusher";
 import clientPromise from "@/lib/mongodb";
 import { AddTeamRequestBody, DeleteTeamRequestBody } from "@/types/room";
 
-export async function GET() {
-  const greeting = "Hello from rooms api";
-  const json = {
-    greeting,
-  };
-
-  return NextResponse.json(json);
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const roomid = searchParams.get("roomid");
+  if (roomid) {
+    const client = await clientPromise;
+    const result = await getRoom(client, roomid);
+    return result;
+  } else {
+    return NextResponse.json({
+      ok: false,
+      message: "Error provide a roomid",
+      status: 500,
+    });
+  }
 }
 
 export async function POST(request: Request) {
@@ -63,15 +70,11 @@ export async function POST(request: Request) {
   // return response;
 }
 
-async function getRoom(client: MongoClient, body: { roomid: string }) {
-  // const { roomid } = body;
-  // console.log("getRoom: ", roomid);
+async function getRoom(client: MongoClient, roomid: string) {
   try {
-    // const db = client.db("mob-unity");
-    // const result = await db.collection("rooms").findOne({ roomid: roomid });
-    const result = {
-      hello: "fucker",
-    };
+    const db = client.db("mob-unity");
+    const result = await db.collection("rooms").findOne({ roomid: roomid });
+    console.log("Result: ", result);
     if (result) {
       return NextResponse.json({
         ok: true,

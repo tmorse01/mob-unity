@@ -17,20 +17,15 @@ async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
   console.log("getRoomData:", roomId);
   try {
-    const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
     // const response = await axios.post(
     //   process.env.NEXT_PUBLIC_URL + `/api/rooms/`,
     //   requestBody
     // );
     // console.log("Response: ", response);
     // return response.data;
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: requestBody,
-    });
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId
+    );
 
     if (!response.ok) {
       throw new Error(`Request failed with status ${response.status}`);
