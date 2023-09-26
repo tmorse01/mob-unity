@@ -27,7 +27,7 @@ const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
   const roomData = await getRoomData(roomId);
   console.log("roomData: ", roomData);
-  if (roomData === undefined) return <div>Room not found</div>;
+  // if (roomData === undefined) return <div>Room not found</div>;
   return (
     <div>
       <pre>{JSON.stringify(roomData, null, 4)}</pre>
