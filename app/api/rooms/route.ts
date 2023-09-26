@@ -23,20 +23,7 @@ export async function POST(request: Request) {
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
   // console.log("env stuff", { env: process.env });
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      title: "Sample Post",
-      body: "This is the body of the sample post.",
-      userId: 1,
-    }),
-  });
-
-  const data = await res.json();
-
+  const data = await request.json();
   return NextResponse.json(data);
 
   // const body = await request.json();

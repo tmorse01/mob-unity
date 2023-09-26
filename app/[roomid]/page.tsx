@@ -1,5 +1,6 @@
 import { defaultRoom } from "@/types/room";
 import Room from "./Room";
+import axios from "axios";
 
 // const initRoles = (teamMembers: string[]) => {
 //   const shuffledMembers = [...teamMembers].sort(() => Math.random() - 0.5);
@@ -17,21 +18,27 @@ async function getRoomData(roomId: string) {
   console.log("getRoomData:", roomId);
   try {
     const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: requestBody,
-    });
+    const response = await axios.post(
+      process.env.NEXT_PUBLIC_URL + `/api/rooms/`,
+      requestBody
+    );
+    console.log("Response: ", response);
+    return response.data;
+    // const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: requestBody,
+    // });
 
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
+    // if (!response.ok) {
+    //   throw new Error(`Request failed with status ${response.status}`);
+    // }
 
-    const responseData = await response.json();
-    console.log("Response data: ", responseData);
-    return responseData;
+    // const responseData = await response.json();
+    // console.log("Response data: ", responseData);
+    // return responseData;
   } catch (error) {
     console.error("Error: ", error);
     throw error; // You may want to handle the error in a different way
