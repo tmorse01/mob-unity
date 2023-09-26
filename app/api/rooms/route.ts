@@ -9,9 +9,14 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const roomid = searchParams.get("roomid");
   if (roomid) {
-    const client = await clientPromise;
-    const result = await getRoom(client, roomid);
-    return result;
+    return NextResponse.json({
+      ok: false,
+      status: 200,
+      data: roomid,
+    });
+    // const client = await clientPromise;
+    // const result = await getRoom(client, roomid);
+    // return result;
   } else {
     return NextResponse.json({
       ok: false,
