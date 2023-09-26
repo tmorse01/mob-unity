@@ -24,23 +24,29 @@ export async function POST(request: NextRequest) {
   // rotateRoles
   const body = await request.json();
   console.log("POST", body);
-  const client = await clientPromise;
+  // const client = await clientPromise;
   var response;
-  if (body.action === "addRoom") {
-    response = await addRoom(client, body);
-  } else if (body.action === "getRoom") {
-    response = await getRoom(client, body);
-  } else if (body.action === "addTeamMember") {
-    response = await addTeamMember(client, body);
-  } else if (body.action === "deleteTeamMember") {
-    response = await deleteTeamMember(client, body);
-  } else {
-    response = NextResponse.json({
-      ok: false,
-      message: "Invalid action",
-      status: 500,
-    });
-  }
+  response = NextResponse.json({
+    ok: false,
+    message: "Invalid action",
+    status: 500,
+  });
+
+  // if (body.action === "addRoom") {
+  //   response = await addRoom(client, body);
+  // } else if (body.action === "getRoom") {
+  //   response = await getRoom(client, body);
+  // } else if (body.action === "addTeamMember") {
+  //   response = await addTeamMember(client, body);
+  // } else if (body.action === "deleteTeamMember") {
+  //   response = await deleteTeamMember(client, body);
+  // } else {
+  //   response = NextResponse.json({
+  //     ok: false,
+  //     message: "Invalid action",
+  //     status: 500,
+  //   });
+  // }
   // const getUpdatedRoomResponse = await getRoom(client, body);
   // const updatedRoomData = await getUpdatedRoomResponse.json();
   // pusherServer.trigger(`room__${body.roomid}`, "update_room", {
@@ -54,8 +60,8 @@ export async function POST(request: NextRequest) {
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
-  const { roomid } = body;
-  console.log("getRoom: ", roomid);
+  // const { roomid } = body;
+  // console.log("getRoom: ", roomid);
   try {
     // const db = client.db("mob-unity");
     // const result = await db.collection("rooms").findOne({ roomid: roomid });
