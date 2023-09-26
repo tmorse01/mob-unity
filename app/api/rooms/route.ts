@@ -5,16 +5,28 @@ import { pusherServer } from "@/lib/pusher";
 import clientPromise from "@/lib/mongodb";
 import { AddTeamRequestBody, DeleteTeamRequestBody } from "@/types/room";
 
-export async function GET() {
-  const greeting = "Hello from rooms api";
-  const json = {
-    greeting,
-  };
-
-  return NextResponse.json(json);
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const roomid = searchParams.get("roomid");
+  if (roomid) {
+    return NextResponse.json({
+      ok: false,
+      status: 200,
+      data: roomid,
+    });
+    // const client = await clientPromise;
+    // const result = await getRoom(client, roomid);
+    // return result;
+  } else {
+    return NextResponse.json({
+      ok: false,
+      message: "Error provide a roomid",
+      status: 500,
+    });
+  }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   // make an update to the room
   // case per action like
   // addRoom, getRoom
@@ -22,25 +34,35 @@ export async function POST(request: NextRequest) {
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
-  const body = await request.json();
-  console.log("POST", body);
-  const client = await clientPromise;
-  var response;
-  if (body.action === "addRoom") {
-    response = await addRoom(client, body);
-  } else if (body.action === "getRoom") {
-    response = await getRoom(client, body);
-  } else if (body.action === "addTeamMember") {
-    response = await addTeamMember(client, body);
-  } else if (body.action === "deleteTeamMember") {
-    response = await deleteTeamMember(client, body);
-  } else {
-    response = NextResponse.json({
-      ok: false,
-      message: "Invalid action",
-      status: 500,
-    });
-  }
+  // console.log("env stuff", { env: process.env });
+  const data = await request.json();
+  return NextResponse.json(data);
+
+  // const body = await request.json();
+  // console.log("POST", body);
+  // const client = await clientPromise;
+  // var response;
+  // response = NextResponse.json({
+  //   ok: false,
+  //   message: "Invalid action",
+  //   status: 500,
+  // });
+
+  // if (body.action === "addRoom") {
+  //   response = await addRoom(client, body);
+  // } else if (body.action === "getRoom") {
+  //   response = await getRoom(client, body);
+  // } else if (body.action === "addTeamMember") {
+  //   response = await addTeamMember(client, body);
+  // } else if (body.action === "deleteTeamMember") {
+  //   response = await deleteTeamMember(client, body);
+  // } else {
+  //   response = NextResponse.json({
+  //     ok: false,
+  //     message: "Invalid action",
+  //     status: 500,
+  //   });
+  // }
   // const getUpdatedRoomResponse = await getRoom(client, body);
   // const updatedRoomData = await getUpdatedRoomResponse.json();
   // pusherServer.trigger(`room__${body.roomid}`, "update_room", {
@@ -50,18 +72,14 @@ export async function POST(request: NextRequest) {
   //   return getUpdatedRoomResponse;
   // }
 
-  return response;
+  // return response;
 }
 
-async function getRoom(client: MongoClient, body: { roomid: string }) {
-  const { roomid } = body;
-  console.log("getRoom: ", roomid);
+async function getRoom(client: MongoClient, roomid: string) {
   try {
-    // const db = client.db("mob-unity");
-    // const result = await db.collection("rooms").findOne({ roomid: roomid });
-    const result = {
-      hello: "fucker",
-    };
+    const db = client.db("mob-unity");
+    const result = await db.collection("rooms").findOne({ roomid: roomid });
+    console.log("Result: ", result);
     if (result) {
       return NextResponse.json({
         ok: true,

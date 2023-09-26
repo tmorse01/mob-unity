@@ -1,5 +1,6 @@
 import { defaultRoom } from "@/types/room";
 import Room from "./Room";
+import axios from "axios";
 
 // const initRoles = (teamMembers: string[]) => {
 //   const shuffledMembers = [...teamMembers].sort(() => Math.random() - 0.5);
@@ -14,16 +15,20 @@ import Room from "./Room";
 
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
+  console.log("getRoomData:", roomId);
   try {
-    const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
-    const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(requestBody).toString(),
-      },
-      body: requestBody,
-    });
+    // const response = await axios.post(
+    //   process.env.NEXT_PUBLIC_URL + `/api/rooms/`,
+    //   requestBody
+    // );
+    // console.log("Response: ", response);
+    // return response.data;
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId,
+      {
+        cache: "no-cache",
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Request failed with status ${response.status}`);
@@ -40,6 +45,7 @@ async function getRoomData(roomId: string) {
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
+  console.log("roomId: ", roomId);
   const roomData = await getRoomData(roomId);
   console.log("roomData: ", roomData);
   // if (roomData === undefined) return <div>Room not found</div>;
