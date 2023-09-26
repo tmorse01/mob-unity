@@ -24,7 +24,10 @@ async function getRoomData(roomId: string) {
     // console.log("Response: ", response);
     // return response.data;
     const response = await fetch(
-      process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId
+      process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId,
+      {
+        cache: "no-cache",
+      }
     );
 
     if (!response.ok) {
