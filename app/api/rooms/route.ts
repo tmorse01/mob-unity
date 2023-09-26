@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
-
+  console.log("env stuff", { env: process.env });
   const res = await request.json();
   return NextResponse.json({ res });
 
