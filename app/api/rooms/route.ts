@@ -57,15 +57,26 @@ async function getRoom(client: MongoClient, body: { roomid: string }) {
   const { roomid } = body;
   console.log("getRoom: ", roomid);
   try {
-    const db = client.db("mob-unity");
-    // const response = await db.collection("rooms").findOne({ roomid: roomid });
+    // const db = client.db("mob-unity");
+    // const result = await db.collection("rooms").findOne({ roomid: roomid });
+    const result = {
+      hello: "fucker",
+    };
+    if (result) {
+      return NextResponse.json({
+        ok: true,
+        message: "Room found successfully",
+        status: 200,
+        data: result,
+      });
+    } else {
+      return NextResponse.json({
+        ok: false,
+        message: "Room not found.",
+        status: 404,
+      });
+    }
     // console.log("getRoomResponse: ", response);
-    return NextResponse.json({
-      ok: true,
-      message: "Room found successfully",
-      status: 200,
-      data: { here: "fucker" },
-    });
   } catch (error) {
     return NextResponse.json({
       ok: false,
