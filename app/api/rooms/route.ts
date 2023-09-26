@@ -22,15 +22,19 @@ export async function POST(request: NextRequest) {
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
+
+  const res = await request.json();
+  return NextResponse.json({ res });
+
   // const body = await request.json();
   // console.log("POST", body);
   // const client = await clientPromise;
-  var response;
-  response = NextResponse.json({
-    ok: false,
-    message: "Invalid action",
-    status: 500,
-  });
+  // var response;
+  // response = NextResponse.json({
+  //   ok: false,
+  //   message: "Invalid action",
+  //   status: 500,
+  // });
 
   // if (body.action === "addRoom") {
   //   response = await addRoom(client, body);
@@ -56,7 +60,7 @@ export async function POST(request: NextRequest) {
   //   return getUpdatedRoomResponse;
   // }
 
-  return response;
+  // return response;
 }
 
 async function getRoom(client: MongoClient, body: { roomid: string }) {
