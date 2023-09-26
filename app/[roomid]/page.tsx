@@ -14,6 +14,7 @@ import Room from "./Room";
 
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
+  console.log("getRoomData:", roomId);
   try {
     const requestBody = JSON.stringify({ action: "getRoom", roomid: roomId });
     const response = await fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
@@ -40,6 +41,7 @@ async function getRoomData(roomId: string) {
 
 const RoomPage = async ({ params }: { params: { roomid: string } }) => {
   const roomId = params.roomid;
+  console.log("roomId: ", roomId);
   const roomData = await getRoomData(roomId);
   console.log("roomData: ", roomData);
   // if (roomData === undefined) return <div>Room not found</div>;
