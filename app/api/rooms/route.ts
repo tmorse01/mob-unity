@@ -8,6 +8,7 @@ import { AddTeamRequestBody, DeleteTeamRequestBody, RoomData } from "@/types/roo
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const roomid = searchParams.get("roomid");
+  console.log('route for get room', roomid)
   if (roomid) {
     const client = await clientPromise;
     const result = await getRoom(client, roomid);

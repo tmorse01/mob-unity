@@ -16,9 +16,7 @@ import axios from "axios";
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
   try {
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rooms?roomid=${roomId}`);
     if (!response.ok)
       throw new Error(`Request failed with status ${response.status}`);
 
