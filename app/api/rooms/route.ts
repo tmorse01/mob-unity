@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 import { pusherServer } from "@/lib/pusher";
 
 import clientPromise from "@/lib/mongodb";
-import { AddTeamRequestBody, DeleteTeamRequestBody } from "@/types/room";
+import { AddTeamRequestBody, DeleteTeamRequestBody, RoomData } from "@/types/room";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -71,7 +71,7 @@ async function getRoom(client: MongoClient, roomid: string) {
   try {
     const db = client.db("mob-unity");
     const result = await db.collection("rooms").findOne({ roomid: roomid });
-    console.log("Result: ", result);
+    console.log("get room result: ", result);
     if (result) {
       return NextResponse.json({
         ok: true,
@@ -98,17 +98,14 @@ async function getRoom(client: MongoClient, roomid: string) {
 
 async function addRoom(
   client: MongoClient,
-  body: {
-    roomid: string;
-    createdts: Date;
-  }
+  body: RoomData
 ) {
   try {
-    const { roomid, createdts } = body;
+    const { roomid, teammembers, goals, timer, createdts } = body;
     const db = client.db("mob-unity");
     const response = await db
       .collection("rooms")
-      .insertOne({ roomid, createdts });
+      .insertOne({ roomid, teammembers, goals, timer, createdts });
     return NextResponse.json({
       ok: true,
       message: "Room created successfully",

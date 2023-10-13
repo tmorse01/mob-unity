@@ -19,7 +19,6 @@ async function getRoomData(roomId: string) {
     const response = await fetch(
       process.env.NEXT_PUBLIC_URL + `/api/rooms?roomid=` + roomId
     );
-
     if (!response.ok)
       throw new Error(`Request failed with status ${response.status}`);
 
