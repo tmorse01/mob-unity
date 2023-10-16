@@ -12,7 +12,7 @@ import {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const roomid = searchParams.get("roomid");
-  console.log("route for get room", roomid);
+  // console.log("route for get room", roomid);
   if (roomid) {
     const client = await clientPromise;
     const result = await getRoom(client, roomid);
@@ -36,13 +36,12 @@ export async function POST(request: Request) {
   // rotateRoles
 
   const body = await request.json();
+  const { roomid } = body;
   console.log("POST", body);
   const client = await clientPromise;
   var response;
   if (body.action === "addRoom") {
     response = await addRoom(client, body);
-  } else if (body.action === "getRoom") {
-    response = await getRoom(client, body);
   } else if (body.action === "addTeamMember") {
     response = await addTeamMember(client, body);
   } else if (body.action === "deleteTeamMember") {
@@ -54,10 +53,9 @@ export async function POST(request: Request) {
       status: 500,
     });
   }
-  const getUpdatedRoomResponse = await getRoom(client, body);
+  const getUpdatedRoomResponse = await getRoom(client, roomid);
   const updatedRoomData = await getUpdatedRoomResponse.json();
-  console.log("updatedRoomData: ", updatedRoomData);
-  pusherServer.trigger(`room__${body.roomid}`, "update_room", {
+  pusherServer.trigger(`room__${roomid}`, "update_room", {
     room: updatedRoomData.data,
   });
   if (getUpdatedRoomResponse.ok === false) {
@@ -71,6 +69,7 @@ async function getRoom(client: MongoClient, roomid: string) {
   try {
     const db = client.db("mob-unity");
     const result = await db.collection("rooms").findOne({ roomid: roomid });
+    // console.log("getRoom route", result);
     if (result) {
       return NextResponse.json({
         ok: true,
