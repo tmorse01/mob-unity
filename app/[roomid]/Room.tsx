@@ -22,6 +22,7 @@ const Room = ({ roomData, roomId }: RoomProps) => {
     // implement inactivity timeout for connection
     const channel = pusherClient.subscribe(`room__${roomId}`);
     channel.bind("update_room", function ({ room }: { room: RoomData }) {
+      console.log("updating room from pusher", room);
       setRoom(room);
     });
 

@@ -3,12 +3,16 @@ import { MongoClient } from "mongodb";
 import { pusherServer } from "@/lib/pusher";
 
 import clientPromise from "@/lib/mongodb";
-import { AddTeamRequestBody, DeleteTeamRequestBody, RoomData } from "@/types/room";
+import {
+  AddTeamRequestBody,
+  DeleteTeamRequestBody,
+  RoomData,
+} from "@/types/room";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const roomid = searchParams.get("roomid");
-  console.log('route for get room', roomid)
+  console.log("route for get room", roomid);
   if (roomid) {
     const client = await clientPromise;
     const result = await getRoom(client, roomid);
@@ -35,12 +39,6 @@ export async function POST(request: Request) {
   console.log("POST", body);
   const client = await clientPromise;
   var response;
-  response = NextResponse.json({
-    ok: false,
-    message: "Invalid action",
-    status: 500,
-  });
-
   if (body.action === "addRoom") {
     response = await addRoom(client, body);
   } else if (body.action === "getRoom") {
@@ -58,6 +56,7 @@ export async function POST(request: Request) {
   }
   const getUpdatedRoomResponse = await getRoom(client, body);
   const updatedRoomData = await getUpdatedRoomResponse.json();
+  console.log("updatedRoomData: ", updatedRoomData);
   pusherServer.trigger(`room__${body.roomid}`, "update_room", {
     room: updatedRoomData.data,
   });
@@ -72,7 +71,6 @@ async function getRoom(client: MongoClient, roomid: string) {
   try {
     const db = client.db("mob-unity");
     const result = await db.collection("rooms").findOne({ roomid: roomid });
-    console.log("get room result: ", result);
     if (result) {
       return NextResponse.json({
         ok: true,
@@ -97,10 +95,7 @@ async function getRoom(client: MongoClient, roomid: string) {
   }
 }
 
-async function addRoom(
-  client: MongoClient,
-  body: RoomData
-) {
+async function addRoom(client: MongoClient, body: RoomData) {
   try {
     const { roomid, teammembers, goals, timer, createdts } = body;
     const db = client.db("mob-unity");

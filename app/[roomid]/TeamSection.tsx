@@ -36,6 +36,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
           roomid: roomId,
           member: member,
         }),
+        cache: "no-store",
       })
         .then((res) => res.json())
         .then((data) => {

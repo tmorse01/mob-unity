@@ -1,6 +1,5 @@
 "use client";
 import { defaultRoom } from "@/types/room";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
@@ -10,16 +9,16 @@ interface FormData {
   roomid: string;
 }
 
-async function getExistingRoom(roomid:string){
-  return fetch(`/api/rooms?roomid=${roomid}`).then(res => res.json());
+async function getExistingRoom(roomid: string) {
+  return fetch(`/api/rooms?roomid=${roomid}`).then((res) => res.json());
 }
 
 async function createRoom(roomid: string) {
-  const body = JSON.stringify({ action: "addRoom", ...defaultRoom, roomid })
+  const body = JSON.stringify({ action: "addRoom", ...defaultRoom, roomid });
   return fetch("/api/rooms", {
     method: "POST",
     body: body,
-  }).then(res => res.json());
+  }).then((res) => res.json());
 }
 export default function CreateRoomForm() {
   const { register, handleSubmit } = useForm<FormData>();
@@ -31,7 +30,7 @@ export default function CreateRoomForm() {
     try {
       // check if room already exists, if so just navigate to the room url
       const existingRoom = await getExistingRoom(roomid);
-      if (existingRoom.data !== undefined){
+      if (existingRoom.data !== undefined) {
         router.push("/" + roomid);
       } else {
         const response = await createRoom(roomid);
