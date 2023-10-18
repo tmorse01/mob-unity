@@ -27,6 +27,8 @@ export default function CreateRoomForm() {
 
   const onSubmit = async (data: FormData) => {
     const roomid = data.roomid;
+    console.log("onSubmit: ", roomid);
+
     try {
       // check if room already exists, if so just navigate to the room url
       const existingRoom = await getExistingRoom(roomid);

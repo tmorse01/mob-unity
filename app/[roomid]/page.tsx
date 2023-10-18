@@ -1,3 +1,4 @@
+import { getApiUrl } from "@/lib/requesthelper";
 import Room from "./Room";
 
 // const initRoles = (teamMembers: string[]) => {
@@ -14,10 +15,10 @@ import Room from "./Room";
 async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/rooms?roomid=${roomId}`,
-      { cache: "no-store" }
-    );
+    const url = getApiUrl();
+    const response = await fetch(`${url}/api/rooms?roomid=${roomId}`, {
+      cache: "no-store",
+    });
     if (!response.ok)
       throw new Error(`Request failed with status ${response.status}`);
     const responseData = await response.json();
