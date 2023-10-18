@@ -1,7 +1,8 @@
 export function getApiUrl() {
-  const env = process.env.VERCEL_ENV;
+  // console.log("getApiUrl", process.env);
+  const env = process.env.NODE_ENV;
   if (env === "development") {
-    return `http://${process.env.VERCEL_URL}`;
+    return `http://localhost:3000`;
   } else {
     return `https://${process.env.VERCEL_URL}`;
   }

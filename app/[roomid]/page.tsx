@@ -16,6 +16,7 @@ async function getRoomData(roomId: string) {
   // TODO implement smart caching with on demand revalidation
   try {
     const apiUrl = getApiUrl();
+    console.log("getRoomData: ", apiUrl);
     const response = await fetch(`${apiUrl}/api/rooms?roomid=${roomId}`, {
       cache: "no-store",
     });

@@ -23,6 +23,7 @@ const Room = ({ roomData, roomId }: RoomProps) => {
     // pusher has a dependency on next<13.4.18 as far as I can tell
     const channel = pusherClient.subscribe(`room__${roomId}`);
     channel.bind("update_room", function ({ room }: { room: RoomData }) {
+      console.log("Updating room from pusher: ", room);
       setRoom(room);
     });
 
