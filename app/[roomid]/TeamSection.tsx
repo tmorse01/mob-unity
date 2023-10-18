@@ -1,4 +1,5 @@
 "use client";
+import { getApiUrl } from "@/lib/requesthelper";
 import { TeamMember } from "@/types/room";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -26,7 +27,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
     if (newMember.trim() !== "") {
       handleMemberChange([...teamMembers, member]);
       setNewMember("");
-      fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
+      fetch(`/api/rooms/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +60,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
     );
     const updatedMembers = teamMembers.filter((_, i) => i !== indexOfMember);
     handleMemberChange(updatedMembers);
-    fetch(process.env.NEXT_PUBLIC_URL + `/api/rooms/`, {
+    fetch(`/api/rooms/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
