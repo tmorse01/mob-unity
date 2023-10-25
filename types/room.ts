@@ -1,3 +1,5 @@
+import { Timestamp } from "mongodb";
+
 export interface TeamMember {
   memberid: string;
   name: string;
@@ -21,6 +23,7 @@ export interface RoomData {
   teammembers: TeamMember[];
   goals: Goal[];
   timer: Timer;
+  createdts: Number;
 }
 
 export type AddTeamRequestBody = {
@@ -89,6 +92,7 @@ const exampleJson: RoomData = {
     status: "active",
     duration: 660,
   },
+  createdts: Date.now()
 };
 
 export const defaultRoom: RoomData = {
@@ -96,7 +100,8 @@ export const defaultRoom: RoomData = {
   teammembers: [],
   goals: [],
   timer: {
-    status: "",
+    status: "inactive",
     duration: 660,
   },
+  createdts: Date.now()
 };
