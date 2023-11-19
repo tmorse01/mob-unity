@@ -3,7 +3,7 @@ import { defaultRoom } from "@/types/room";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 interface FormData {
   roomid: string;
@@ -24,13 +24,15 @@ export default function CreateRoomForm() {
   const { register, handleSubmit } = useForm<FormData>();
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    const roomid = data.roomid;
-    console.log("onSubmit: ", roomid);
-
     try {
       // check if room already exists, if so just navigate to the room url
+      const roomid = data.roomid;
+      console.log("onSubmit: ", roomid);
+      if (roomid === "") throw new Error("Please input a valid room name.");
+      setLoading(true);
       const existingRoom = await getExistingRoom(roomid);
       if (existingRoom.data !== undefined) {
         router.push("/" + roomid);
@@ -64,6 +66,7 @@ export default function CreateRoomForm() {
             type="submit"
             className="px-6 py-2 ml-4 font-semibold rounded-full btn btn-primary md:col-span-1"
           >
+            {loading && <span className="loading loading-spinner" />}
             Get Started
           </button>
         </div>
