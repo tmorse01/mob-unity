@@ -27,11 +27,12 @@ export default function CreateRoomForm() {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    const roomid = data.roomid;
-    console.log("onSubmit: ", roomid);
-    setLoading(true);
     try {
       // check if room already exists, if so just navigate to the room url
+      const roomid = data.roomid;
+      console.log("onSubmit: ", roomid);
+      if (roomid === "") throw new Error("Please input a valid room name.");
+      setLoading(true);
       const existingRoom = await getExistingRoom(roomid);
       if (existingRoom.data !== undefined) {
         router.push("/" + roomid);
@@ -40,7 +41,6 @@ export default function CreateRoomForm() {
         if (response.ok === false) throw new Error(response.data.message);
         router.push("/" + roomid);
       }
-      setLoading(false);
     } catch (error: any) {
       // Handle error
       console.error(error);
