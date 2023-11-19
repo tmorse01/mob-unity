@@ -71,6 +71,7 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
   const seconds = remainingTime % 60;
 
   const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
+  // TODO add break duration
 
   return (
     <div className="flex flex-col gap-8">
