@@ -14,9 +14,11 @@ export default function CreateRoomForm() {
   const { register, handleSubmit } = useForm<FormData>();
   const [error, setError] = useState(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     const roomid = data.roomid;
+    setLoading(true);
     try {
       const createdts = Date.now();
       // covert to fetch potentially for nextjs
@@ -28,6 +30,7 @@ export default function CreateRoomForm() {
       });
       if (response.data.ok === false) throw new Error(response.data.message);
       router.push("/" + roomid);
+      setLoading(false);
     } catch (error: any) {
       // Handle error
       console.error(error);
@@ -53,6 +56,7 @@ export default function CreateRoomForm() {
             type="submit"
             className="px-6 py-2 ml-4 font-semibold rounded-full btn btn-primary md:col-span-1"
           >
+            {loading && <span className="loading loading-spinner" />}
             Get Started
           </button>
         </div>
