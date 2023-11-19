@@ -27,7 +27,7 @@ const TeamSection: React.FC<TeamSectionProps> = ({
     if (newMember.trim() !== "") {
       handleMemberChange([...teamMembers, member]);
       setNewMember("");
-      fetch(`/api/rooms/`, {
+      fetch(`/api/rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
