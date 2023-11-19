@@ -1,15 +1,25 @@
 "use client";
 import { defaultRoom } from "@/types/room";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 
 interface FormData {
   roomid: string;
 }
 
+async function getExistingRoom(roomid: string) {
+  return fetch(`/api/rooms?roomid=${roomid}`).then((res) => res.json());
+}
+
+async function createRoom(roomid: string) {
+  const body = JSON.stringify({ action: "addRoom", ...defaultRoom, roomid });
+  return fetch("/api/rooms", {
+    method: "POST",
+    body: body,
+  }).then((res) => res.json());
+}
 export default function CreateRoomForm() {
   const { register, handleSubmit } = useForm<FormData>();
   const [error, setError] = useState(null);
@@ -18,18 +28,18 @@ export default function CreateRoomForm() {
 
   const onSubmit = async (data: FormData) => {
     const roomid = data.roomid;
+    console.log("onSubmit: ", roomid);
     setLoading(true);
     try {
-      const createdts = Date.now();
-      // covert to fetch potentially for nextjs
-      const response = await axios.post("/api/rooms", {
-        action: "addRoom",
-        ...defaultRoom,
-        roomid,
-        createdts,
-      });
-      if (response.data.ok === false) throw new Error(response.data.message);
-      router.push("/" + roomid);
+      // check if room already exists, if so just navigate to the room url
+      const existingRoom = await getExistingRoom(roomid);
+      if (existingRoom.data !== undefined) {
+        router.push("/" + roomid);
+      } else {
+        const response = await createRoom(roomid);
+        if (response.ok === false) throw new Error(response.data.message);
+        router.push("/" + roomid);
+      }
       setLoading(false);
     } catch (error: any) {
       // Handle error
