@@ -2,12 +2,17 @@
 import React, { useState, useEffect } from "react";
 import TimerDurationForm from "./TimerDurationForm";
 import { Duration } from "@/types/room";
-import { getApiUrl } from "@/lib/requesthelper";
+import Countdown from "./Countdown";
 
 interface TimerProps {
   roomId: string;
   onTimeUp: () => void;
 }
+
+type CurrentBreak = {
+  active: boolean;
+  remainingTime: number;
+};
 
 const showNotification = () => {
   if ("Notification" in window) {
@@ -33,10 +38,15 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   const [duration, setDuration] = useState<Duration>({
     turn: 420,
     break: 3600,
+    session: 0,
   });
   const [isRunning, setIsRunning] = useState(false);
   const [remainingTime, setRemainingTime] = useState(duration.turn);
   const [showNotifications, setShowNotifications] = useState<boolean>(true);
+  const [currentBreak, setCurrentBreak] = useState<CurrentBreak>({
+    active: false,
+    remainingTime: 600,
+  });
 
   const handleStart = () => {
     setIsRunning(true);
@@ -58,6 +68,18 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
       }, 1000);
     } else if (remainingTime === 0) {
       if (showNotifications) showNotification();
+      // another turn completed add it to the session total duration
+      const updatedDuration = {
+        ...duration,
+        session: duration.session + duration.turn,
+      };
+      setDuration(updatedDuration);
+      updateDuration(roomId, updatedDuration);
+      // do a check if the session duration exceeds the break duration
+      if (updatedDuration.session >= updatedDuration.break) {
+        updatedDuration.session = 0;
+        setCurrentBreak({ ...currentBreak, active: true });
+      }
       onTimeUp();
     }
 
@@ -76,6 +98,7 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   };
 
   async function updateDuration(roomid: string, duration: Duration) {
+    console.log("updateDuration: ", duration);
     const body = JSON.stringify({ action: "editDuration", roomid, duration });
     return fetch("/api/rooms", {
       method: "POST",
@@ -83,42 +106,15 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("udpated duration: ", data);
+        console.log("updated duration: ", data);
       })
       .catch((error) => console.error(error));
   }
 
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
-
-  const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
-
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center gap-4">
-        <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className={"countdown font-mono text-5xl"}>
-              <span
-                className={timerClass}
-                // @ts-ignore
-                style={{ "--value": minutes }}
-              ></span>
-            </span>
-            min
-          </div>
-          <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
-            <span className={"countdown font-mono text-5xl"}>
-              <span
-                className={timerClass}
-                // @ts-ignore
-
-                style={{ "--value": seconds }}
-              ></span>
-            </span>
-            sec
-          </div>
-        </div>
+        <Countdown remainingTime={remainingTime} />
 
         {!isRunning && (
           <button onClick={handleStart} className="btn btn-primary">
@@ -156,6 +152,13 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
           />
         </div>
       </div>
+      {currentBreak.active && (
+        <div className="prose">
+          <h2>Time to take a break!</h2>
+          <Countdown remainingTime={currentBreak.remainingTime} />
+          <button className="btn btn-primary">Resume</button>
+        </div>
+      )}
       <dialog id="turn_duration" className="modal">
         <TimerDurationForm onDurationSubmit={handleSetTurnDuration} />
       </dialog>

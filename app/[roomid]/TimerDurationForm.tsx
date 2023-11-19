@@ -10,6 +10,7 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
   const [duration, setDuration] = useState<Duration>({
     turn: 420,
     break: 3600,
+    session: 0,
   });
   const onSubmit = () => {
     onDurationSubmit(duration);
@@ -28,9 +29,9 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
         <input
           id="duration"
           type="range"
-          min={"300"}
-          max={"540"}
-          step={"60"}
+          min={"10"}
+          max={"60"}
+          step={"10"}
           value={duration.turn}
           className="range range-primary"
           onChange={(e) =>

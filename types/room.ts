@@ -21,6 +21,7 @@ export interface Timer {
 export type Duration = {
   turn: number;
   break: number;
+  session: number;
 };
 
 export interface RoomData {
@@ -103,6 +104,7 @@ const exampleJson: RoomData = {
     duration: {
       turn: 600,
       break: 3600,
+      session: 0,
     },
   },
   createdts: Date.now(),
@@ -117,6 +119,7 @@ export const defaultRoom: RoomData = {
     duration: {
       turn: 600,
       break: 3600,
+      session: 0,
     },
   },
   createdts: Date.now(),
