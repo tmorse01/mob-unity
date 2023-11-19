@@ -6,6 +6,7 @@ import clientPromise from "@/lib/mongodb";
 import {
   AddTeamRequestBody,
   DeleteTeamRequestBody,
+  EditDurationBody,
   RoomData,
 } from "@/types/room";
 
@@ -46,6 +47,8 @@ export async function POST(request: Request) {
     response = await addTeamMember(client, body);
   } else if (body.action === "deleteTeamMember") {
     response = await deleteTeamMember(client, body);
+  } else if (body.action === "editDuration") {
+    response = await editDuration(client, body);
   } else {
     response = NextResponse.json({
       ok: false,
@@ -166,6 +169,31 @@ async function deleteTeamMember(
     return NextResponse.json({
       ok: false,
       message: "Error deleting team member",
+      status: 500,
+    });
+  }
+}
+
+async function editDuration(client: MongoClient, body: EditDurationBody) {
+  try {
+    const { roomid, duration } = body;
+    const db = client.db("mob-unity");
+    const response = await db
+      .collection("rooms")
+      .updateOne({ roomid }, { $set: { timer: { duration: duration } } });
+    if (response.modifiedCount === 1) {
+      return NextResponse.json({
+        ok: true,
+        message: "Duration updated successfully",
+        status: 201,
+      });
+    } else {
+      throw new Error("Error updating duration");
+    }
+  } catch (error: any) {
+    return NextResponse.json({
+      ok: false,
+      message: "Error updating duration " + error.message,
       status: 500,
     });
   }

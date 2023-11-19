@@ -1,12 +1,16 @@
 "use client";
+import { Duration } from "@/types/room";
 import React, { useState } from "react";
 
 interface TimerDurationFormProps {
-  onDurationSubmit: (duration: number) => void;
+  onDurationSubmit: (duration: Duration) => void;
 }
 
 function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
-  const [duration, setDuration] = useState<number>(420);
+  const [duration, setDuration] = useState<Duration>({
+    turn: 420,
+    break: 3600,
+  });
   const onSubmit = () => {
     onDurationSubmit(duration);
   };
@@ -22,13 +26,16 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
           Turn Duration (minutes)
         </label>
         <input
+          id="duration"
           type="range"
           min={"300"}
           max={"540"}
           step={"60"}
-          value={duration}
+          value={duration.turn}
           className="range range-primary"
-          onChange={(e) => setDuration(Number(e.target.value))}
+          onChange={(e) =>
+            setDuration({ ...duration, turn: Number(e.target.value) })
+          }
         />
       </div>
       <div className="w-full flex justify-between text-xs px-2">
@@ -37,6 +44,20 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
         <span>7</span>
         <span>8</span>
         <span>9</span>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="breakDuration" className="label">
+          Break Duration (minutes)
+        </label>
+        <input
+          type="text"
+          placeholder="Break duration"
+          className="input input-bordered w-full max-w-xs"
+          onChange={(e) =>
+            setDuration({ ...duration, break: Number(e.target.value) * 60 })
+          }
+          value={duration.break / 60}
+        />
       </div>
       <div className="modal-action">
         <button type="submit" className="btn btn-primary btn-sm">

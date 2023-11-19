@@ -47,7 +47,7 @@ const Room = ({ roomData, roomId }: RoomProps) => {
 
   return (
     <div className="grid m-4 lg:m-16 gap-4 g:gap-16 grid-cols-1 lg:grid-cols-2">
-      <Timer onTimeUp={rotateRoles} />
+      <Timer roomId={roomId} onTimeUp={rotateRoles} />
       <CurrentRoles teamMembers={room.teammembers} />
       <TeamSection
         roomId={roomId}

@@ -15,8 +15,13 @@ export interface Goal {
 
 export interface Timer {
   status: string;
-  duration: number;
+  duration: Duration;
 }
+
+export type Duration = {
+  turn: number;
+  break: number;
+};
 
 export interface RoomData {
   roomid: string;
@@ -34,6 +39,11 @@ export type AddTeamRequestBody = {
 export type DeleteTeamRequestBody = {
   roomid: string;
   memberid: string;
+};
+
+export type EditDurationBody = {
+  roomid: string;
+  duration: Duration;
 };
 
 const exampleJson: RoomData = {
@@ -90,9 +100,12 @@ const exampleJson: RoomData = {
   ],
   timer: {
     status: "active",
-    duration: 660,
+    duration: {
+      turn: 600,
+      break: 3600,
+    },
   },
-  createdts: Date.now()
+  createdts: Date.now(),
 };
 
 export const defaultRoom: RoomData = {
@@ -101,7 +114,10 @@ export const defaultRoom: RoomData = {
   goals: [],
   timer: {
     status: "inactive",
-    duration: 660,
+    duration: {
+      turn: 600,
+      break: 3600,
+    },
   },
-  createdts: Date.now()
+  createdts: Date.now(),
 };

@@ -1,7 +1,11 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import TimerDurationForm from "./TimerDurationForm";
+import { Duration } from "@/types/room";
+import { getApiUrl } from "@/lib/requesthelper";
 
 interface TimerProps {
+  roomId: string;
   onTimeUp: () => void;
 }
 
@@ -25,10 +29,13 @@ const showNotification = () => {
   }
 };
 
-const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
-  const [turnDuration, setTurnDuration] = useState<number>(420);
+const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
+  const [duration, setDuration] = useState<Duration>({
+    turn: 420,
+    break: 3600,
+  });
   const [isRunning, setIsRunning] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(turnDuration);
+  const [remainingTime, setRemainingTime] = useState(duration.turn);
   const [showNotifications, setShowNotifications] = useState<boolean>(true);
 
   const handleStart = () => {
@@ -58,20 +65,33 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
   }, [isRunning, remainingTime]);
 
   const handleReset = () => {
-    setRemainingTime(turnDuration);
+    setRemainingTime(duration.turn);
     onReset();
   };
 
-  const handleSetTurnDuration = (duration: number) => {
-    setTurnDuration(duration);
-    setRemainingTime(duration);
+  const handleSetTurnDuration = (duration: Duration) => {
+    setDuration(duration);
+    setRemainingTime(duration.turn);
+    updateDuration(roomId, duration);
   };
+
+  async function updateDuration(roomid: string, duration: Duration) {
+    const body = JSON.stringify({ action: "editDuration", roomid, duration });
+    return fetch("/api/rooms", {
+      method: "POST",
+      body: body,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("udpated duration: ", data);
+      })
+      .catch((error) => console.error(error));
+  }
 
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
 
   const timerClass = remainingTime < 30 ? "text-error animate-pulse" : "";
-  // TODO add break duration
 
   return (
     <div className="flex flex-col gap-8">
@@ -124,7 +144,7 @@ const Timer: React.FC<TimerProps> = ({ onTimeUp }) => {
           // @ts-ignore
           onClick={() => window.turn_duration.showModal()}
         >
-          Edit Turn Duration
+          Edit Durations
         </button>
         <div className="flex flex-row items-center gap-4">
           <label className="label">Show Notifications</label>
