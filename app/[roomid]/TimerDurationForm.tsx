@@ -17,6 +17,7 @@ function TimerDurationForm({
     onDurationSubmit(duration);
   };
 
+  //  TODO add control for how long a break is
   return (
     <form
       method="dialog"

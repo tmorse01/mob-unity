@@ -10,7 +10,7 @@ interface TimerProps {
   onTimeUp: () => void;
 }
 
-type CurrentBreak = {
+type Timer = {
   active: boolean;
   remainingTime: number;
 };
@@ -41,41 +41,45 @@ const Timer: React.FC<TimerProps> = ({
   onTimeUp,
 }) => {
   const [duration, setDuration] = useState<Duration>({
-    turn: 5,
-    break: 6,
+    turn: 360,
+    break: 1800,
     session: 0,
   });
-  const [isRunning, setIsRunning] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(duration.turn);
   const [showNotifications, setShowNotifications] = useState<boolean>(true);
-  const [currentBreak, setCurrentBreak] = useState<CurrentBreak>({
+  const [sessionTimer, setSesstionTimer] = useState<Timer>({
+    active: false,
+    remainingTime: duration.turn,
+  });
+  const [currentBreak, setCurrentBreak] = useState<Timer>({
     active: false,
     remainingTime: 600,
   });
 
   const handleStart = () => {
-    setIsRunning(true);
+    setSesstionTimer({ ...sessionTimer, active: true });
   };
 
   const handlePause = () => {
-    setIsRunning(false);
-  };
-
-  const onReset = () => {
-    setIsRunning(false);
+    setSesstionTimer({ ...sessionTimer, active: false });
   };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isRunning) {
+    if (sessionTimer.active && sessionTimer.remainingTime > 0) {
       timer = setInterval(() => {
-        if (remainingTime > 0) {
-          setRemainingTime((prevTime) => prevTime - 1);
-        } else {
-          clearInterval(timer);
-        }
+        setSesstionTimer((prevTimer) => {
+          if (prevTimer.remainingTime > 0) {
+            return {
+              ...prevTimer,
+              remainingTime: prevTimer.remainingTime - 1,
+            };
+          } else {
+            clearInterval(timer);
+            return prevTimer;
+          }
+        });
       }, 1000);
-    } else if (remainingTime === 0) {
+    } else if (sessionTimer.remainingTime === 0) {
       if (showNotifications) showNotification();
       // another turn completed add it to the session total duration
       const updatedDuration = {
@@ -84,8 +88,7 @@ const Timer: React.FC<TimerProps> = ({
       };
       setDuration(updatedDuration);
       updateDuration(roomId, updatedDuration);
-      setIsRunning(false);
-      setRemainingTime(duration.turn);
+      setSesstionTimer({ active: false, remainingTime: duration.turn });
       onTimeUp();
       // check if it's time to take a break
       if (updatedDuration.session >= updatedDuration.break) {
@@ -98,28 +101,34 @@ const Timer: React.FC<TimerProps> = ({
     }
 
     return () => clearInterval(timer);
-  }, [isRunning]);
+  }, [sessionTimer]);
 
   useEffect(() => {
     let breakTimer: NodeJS.Timeout;
     if (currentBreak.active) {
       breakTimer = setInterval(() => {
-        if (currentBreak.remainingTime > 0) {
-          setCurrentBreak((prevBreak) => ({
-            ...prevBreak,
-            remainingTime: prevBreak.remainingTime - 1,
-          }));
-        } else {
-          clearInterval(breakTimer);
-        }
+        setCurrentBreak((prevBreak) => {
+          if (prevBreak.remainingTime > 0) {
+            return {
+              ...prevBreak,
+              remainingTime: prevBreak.remainingTime - 1,
+            };
+          } else {
+            clearInterval(breakTimer);
+            return prevBreak;
+          }
+        });
       }, 1000);
     }
     return () => clearInterval(breakTimer);
   }, [currentBreak]);
 
   const handleReset = () => {
-    setRemainingTime(duration.turn);
-    onReset();
+    setSesstionTimer({
+      ...sessionTimer,
+      active: false,
+      remainingTime: duration.turn,
+    });
   };
 
   const handleResumeSession = () => {
@@ -128,7 +137,7 @@ const Timer: React.FC<TimerProps> = ({
   };
 
   const handleSetTurnDuration = (duration: Duration) => {
-    setRemainingTime(duration.turn);
+    setSesstionTimer({ ...sessionTimer, remainingTime: duration.turn });
     updateDuration(roomId, duration);
   };
 
@@ -150,14 +159,13 @@ const Timer: React.FC<TimerProps> = ({
     <div className="flex flex-col gap-8">
       {!currentBreak.active && (
         <div className="flex flex-wrap items-center gap-4">
-          <Countdown remainingTime={remainingTime} />
-
-          {!isRunning && (
+          <Countdown remainingTime={sessionTimer.remainingTime} />
+          {!sessionTimer.active && (
             <button onClick={handleStart} className="btn btn-primary">
               Start
             </button>
           )}
-          {isRunning && (
+          {sessionTimer.active && (
             <button onClick={handlePause} className="btn btn-secondary">
               Pause
             </button>
