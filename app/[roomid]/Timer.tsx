@@ -36,8 +36,8 @@ const showNotification = () => {
 
 const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   const [duration, setDuration] = useState<Duration>({
-    turn: 5,
-    break: 5,
+    turn: 360,
+    break: 3600,
     session: 0,
   });
   const [isRunning, setIsRunning] = useState(false);
@@ -106,7 +106,6 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   };
 
   const handleSetTurnDuration = (duration: Duration) => {
-    setDuration(duration);
     setRemainingTime(duration.turn);
     updateDuration(roomId, duration);
   };
@@ -180,7 +179,11 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
         </div>
       </div>
       <dialog id="turn_duration" className="modal">
-        <TimerDurationForm onDurationSubmit={handleSetTurnDuration} />
+        <TimerDurationForm
+          duration={duration}
+          setDuration={setDuration}
+          onDurationSubmit={handleSetTurnDuration}
+        />
       </dialog>
     </div>
   );

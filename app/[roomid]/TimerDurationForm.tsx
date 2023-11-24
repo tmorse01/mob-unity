@@ -3,15 +3,16 @@ import { Duration } from "@/types/room";
 import React, { useState } from "react";
 
 interface TimerDurationFormProps {
+  duration: Duration;
+  setDuration: React.Dispatch<React.SetStateAction<Duration>>;
   onDurationSubmit: (duration: Duration) => void;
 }
 
-function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
-  const [duration, setDuration] = useState<Duration>({
-    turn: 10,
-    break: 30,
-    session: 0,
-  });
+function TimerDurationForm({
+  duration,
+  setDuration,
+  onDurationSubmit,
+}: TimerDurationFormProps) {
   const onSubmit = () => {
     onDurationSubmit(duration);
   };
@@ -48,11 +49,10 @@ function TimerDurationForm({ onDurationSubmit }: TimerDurationFormProps) {
       </div>
       <div className="mb-4">
         <label htmlFor="breakDuration" className="label">
-          Break Duration (minutes)
+          How long in between breaks? (minutes)
         </label>
         <input
           type="text"
-          placeholder="Break duration"
           className="input input-bordered w-full max-w-xs"
           onChange={(e) =>
             setDuration({ ...duration, break: Number(e.target.value) * 60 })
