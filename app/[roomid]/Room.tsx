@@ -33,13 +33,12 @@ const Room = ({ roomData, roomId }: RoomProps) => {
   }, []);
 
   const handleTimeUp = () => {
-    console.log("Time up");
-    rotateRoles();
+    // console.log("Time up");
+    handleRotateRoles();
   };
 
-  const rotateRoles = () => {
+  const handleRotateRoles = () => {
     const teamMembers = [...room.teammembers];
-    console.log("teamMembers: ", teamMembers);
     // Place driver into mob, make navigator driver, and pick next mob member in line for navigator
     const driverIndex = teamMembers.findIndex(
       (member) => member.role === "Driver"
@@ -87,7 +86,11 @@ const Room = ({ roomData, roomId }: RoomProps) => {
 
   return (
     <div className="grid m-4 lg:m-16 gap-4 g:gap-16 grid-cols-1 lg:grid-cols-2">
-      <Timer roomId={roomId} onTimeUp={handleTimeUp} />
+      <Timer
+        roomId={roomId}
+        onTimeUp={handleTimeUp}
+        handleRotateRoles={handleRotateRoles}
+      />
       <CurrentRoles teamMembers={room.teammembers} />
       <TeamSection
         roomId={roomId}

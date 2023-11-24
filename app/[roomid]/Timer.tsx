@@ -6,6 +6,7 @@ import Countdown from "./Countdown";
 
 interface TimerProps {
   roomId: string;
+  handleRotateRoles: () => void;
   onTimeUp: () => void;
 }
 
@@ -34,7 +35,11 @@ const showNotification = () => {
   }
 };
 
-const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
+const Timer: React.FC<TimerProps> = ({
+  roomId,
+  handleRotateRoles,
+  onTimeUp,
+}) => {
   const [duration, setDuration] = useState<Duration>({
     turn: 360,
     break: 3600,
@@ -143,7 +148,7 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
           <button onClick={handleReset} className="btn btn-accent">
             Reset
           </button>
-          <button onClick={onTimeUp} className="btn btn-neutral">
+          <button onClick={handleRotateRoles} className="btn btn-neutral">
             Rotate
           </button>
         </div>

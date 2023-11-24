@@ -35,7 +35,6 @@ export async function POST(request: Request) {
   // addTeamMember, deleteTeamMember, updateTeamMembers
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
-  // rotateRoles
 
   const body = await request.json();
   const { roomid } = body;
