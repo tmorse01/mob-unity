@@ -41,8 +41,8 @@ const Timer: React.FC<TimerProps> = ({
   onTimeUp,
 }) => {
   const [duration, setDuration] = useState<Duration>({
-    turn: 360,
-    break: 3600,
+    turn: 5,
+    break: 6,
     session: 0,
   });
   const [isRunning, setIsRunning] = useState(false);
@@ -67,9 +67,13 @@ const Timer: React.FC<TimerProps> = ({
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isRunning && remainingTime > 0) {
+    if (isRunning) {
       timer = setInterval(() => {
-        setRemainingTime((prevTime) => prevTime - 1);
+        if (remainingTime > 0) {
+          setRemainingTime((prevTime) => prevTime - 1);
+        } else {
+          clearInterval(timer);
+        }
       }, 1000);
     } else if (remainingTime === 0) {
       if (showNotifications) showNotification();
@@ -82,23 +86,36 @@ const Timer: React.FC<TimerProps> = ({
       updateDuration(roomId, updatedDuration);
       setIsRunning(false);
       setRemainingTime(duration.turn);
-
+      onTimeUp();
       // check if it's time to take a break
       if (updatedDuration.session >= updatedDuration.break) {
-        setCurrentBreak({ ...currentBreak, active: true });
-        let breakTimer: NodeJS.Timeout;
-        breakTimer = setInterval(() => {
+        setCurrentBreak({
+          ...currentBreak,
+          active: true,
+          remainingTime: duration.break,
+        });
+      }
+    }
+
+    return () => clearInterval(timer);
+  }, [isRunning]);
+
+  useEffect(() => {
+    let breakTimer: NodeJS.Timeout;
+    if (currentBreak.active) {
+      breakTimer = setInterval(() => {
+        if (currentBreak.remainingTime > 0) {
           setCurrentBreak((prevBreak) => ({
             ...prevBreak,
             remainingTime: prevBreak.remainingTime - 1,
           }));
-        }, 1000);
-      }
-      onTimeUp();
+        } else {
+          clearInterval(breakTimer);
+        }
+      }, 1000);
     }
-
-    return () => clearInterval(timer);
-  }, [isRunning, remainingTime]);
+    return () => clearInterval(breakTimer);
+  }, [currentBreak]);
 
   const handleReset = () => {
     setRemainingTime(duration.turn);
