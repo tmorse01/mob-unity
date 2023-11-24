@@ -38,12 +38,47 @@ const Room = ({ roomData, roomId }: RoomProps) => {
   };
 
   const rotateRoles = () => {
-    // const newRoles = { ...currentRoles };
-    // newRoles.driver = currentRoles.navigator;
-    // newRoles.navigator = newRoles.mob.shift();
-    // if (currentRoles.driver !== undefined)
-    //   newRoles.mob.push(currentRoles.driver);
-    // setCurrentRoles(newRoles);
+    const teamMembers = [...room.teammembers];
+    console.log("teamMembers: ", teamMembers);
+    // Place driver into mob, make navigator driver, and pick next mob member in line for navigator
+    const driverIndex = teamMembers.findIndex(
+      (member) => member.role === "Driver"
+    );
+    const driver = teamMembers[driverIndex];
+    const navigator = teamMembers.find((member) => member.role === "Navigator");
+    const mob = teamMembers.filter((member) => member.role === "Mob");
+
+    if (navigator && driver) {
+      driver.role = "Mob";
+      // move driver to back of the teammembers array
+      teamMembers.splice(driverIndex, 1);
+      teamMembers.push(driver);
+      navigator.role = "Driver";
+      mob[0].role = "Navigator";
+    } else {
+      console.error("Unable to find driver and navigator.");
+    }
+    // console.log("updated team members: ", teamMembers);
+    updateTeamMembers(teamMembers);
+    // TODO remove room set state once websockets working consistently
+    setRoom({ ...room, ...{ teammembers: teamMembers } });
+  };
+
+  const updateTeamMembers = (teammembers: TeamMember[]) => {
+    const body = JSON.stringify({
+      action: "updateTeamMembers",
+      roomid: roomId,
+      teammembers,
+    });
+    return fetch("/api/rooms", {
+      method: "POST",
+      body: body,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("updated teamembers: ", data);
+      })
+      .catch((error) => console.error(error));
   };
 
   const handleMemberChange = async (members: TeamMember[]) => {

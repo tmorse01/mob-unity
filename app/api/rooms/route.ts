@@ -6,6 +6,7 @@ import clientPromise from "@/lib/mongodb";
 import {
   AddTeamRequestBody,
   DeleteTeamRequestBody,
+  UpdateTeamRequestBody,
   EditDurationBody,
   RoomData,
 } from "@/types/room";
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
   // make an update to the room
   // case per action like
   // addRoom, getRoom
-  // addTeamMember, deleteTeamMember
+  // addTeamMember, deleteTeamMember, updateTeamMembers
   // addGoal, updateGoal, deleteGoal
   // startTimer, stopTimer, timerReset, durationChange
   // rotateRoles
@@ -47,6 +48,8 @@ export async function POST(request: Request) {
     response = await addTeamMember(client, body);
   } else if (body.action === "deleteTeamMember") {
     response = await deleteTeamMember(client, body);
+  } else if (body.action === "updateTeamMembers") {
+    response = await updateTeamMembers(client, body);
   } else if (body.action === "editDuration") {
     response = await editDuration(client, body);
   } else {
@@ -169,6 +172,34 @@ async function deleteTeamMember(
     return NextResponse.json({
       ok: false,
       message: "Error deleting team member",
+      status: 500,
+    });
+  }
+}
+
+async function updateTeamMembers(
+  client: MongoClient,
+  body: UpdateTeamRequestBody
+) {
+  try {
+    const { roomid, teammembers } = body;
+    const db = client.db("mob-unity");
+    const response = await db
+      .collection("rooms")
+      .updateOne({ roomid }, { $set: { teammembers: teammembers } });
+    if (response.modifiedCount === 1) {
+      return NextResponse.json({
+        ok: true,
+        message: "Team members updated successfully",
+        status: 201,
+      });
+    } else {
+      throw new Error("Error updating team members");
+    }
+  } catch (error) {
+    return NextResponse.json({
+      ok: false,
+      message: "Error updating team member",
       status: 500,
     });
   }

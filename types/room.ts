@@ -42,6 +42,11 @@ export type DeleteTeamRequestBody = {
   memberid: string;
 };
 
+export type UpdateTeamRequestBody = {
+  roomid: string;
+  teammembers: TeamMember[];
+};
+
 export type EditDurationBody = {
   roomid: string;
   duration: Duration;
