@@ -36,8 +36,8 @@ const showNotification = () => {
 
 const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   const [duration, setDuration] = useState<Duration>({
-    turn: 420,
-    break: 3600,
+    turn: 5,
+    break: 5,
     session: 0,
   });
   const [isRunning, setIsRunning] = useState(false);
@@ -75,10 +75,19 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
       };
       setDuration(updatedDuration);
       updateDuration(roomId, updatedDuration);
-      // do a check if the session duration exceeds the break duration
+      setIsRunning(false);
+      setRemainingTime(duration.turn);
+
+      // check if it's time to take a break
       if (updatedDuration.session >= updatedDuration.break) {
-        updatedDuration.session = 0;
         setCurrentBreak({ ...currentBreak, active: true });
+        let breakTimer: NodeJS.Timeout;
+        breakTimer = setInterval(() => {
+          setCurrentBreak((prevBreak) => ({
+            ...prevBreak,
+            remainingTime: prevBreak.remainingTime - 1,
+          }));
+        }, 1000);
       }
       onTimeUp();
     }
@@ -91,6 +100,11 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
     onReset();
   };
 
+  const handleResumeSession = () => {
+    setCurrentBreak({ ...currentBreak, active: false });
+    setDuration({ ...duration, session: 0 });
+  };
+
   const handleSetTurnDuration = (duration: Duration) => {
     setDuration(duration);
     setRemainingTime(duration.turn);
@@ -98,7 +112,7 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
   };
 
   async function updateDuration(roomid: string, duration: Duration) {
-    console.log("updateDuration: ", duration);
+    // console.log("updateDuration: ", duration);
     const body = JSON.stringify({ action: "editDuration", roomid, duration });
     return fetch("/api/rooms", {
       method: "POST",
@@ -106,33 +120,46 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("updated duration: ", data);
+        // console.log("updated duration: ", data);
       })
       .catch((error) => console.error(error));
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-center gap-4">
-        <Countdown remainingTime={remainingTime} />
+      {!currentBreak.active && (
+        <div className="flex flex-wrap items-center gap-4">
+          <Countdown remainingTime={remainingTime} />
 
-        {!isRunning && (
-          <button onClick={handleStart} className="btn btn-primary">
-            Start
+          {!isRunning && (
+            <button onClick={handleStart} className="btn btn-primary">
+              Start
+            </button>
+          )}
+          {isRunning && (
+            <button onClick={handlePause} className="btn btn-secondary">
+              Pause
+            </button>
+          )}
+          <button onClick={handleReset} className="btn btn-accent">
+            Reset
           </button>
-        )}
-        {isRunning && (
-          <button onClick={handlePause} className="btn btn-secondary">
-            Pause
+          <button onClick={onTimeUp} className="btn btn-neutral">
+            Rotate
           </button>
-        )}
-        <button onClick={handleReset} className="btn btn-accent">
-          Reset
-        </button>
-        <button onClick={onTimeUp} className="btn btn-neutral">
-          Rotate
-        </button>
-      </div>
+        </div>
+      )}
+      {currentBreak.active && (
+        <div className="prose">
+          <h1>Time to take a break!</h1>
+          <div className="flex flex-wrap items-center gap-4">
+            <Countdown remainingTime={currentBreak.remainingTime} />
+            <button className="btn btn-primary" onClick={handleResumeSession}>
+              Resume
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="prose flex flex-wrap items-center gap-4">
         <button
@@ -152,13 +179,6 @@ const Timer: React.FC<TimerProps> = ({ roomId, onTimeUp }) => {
           />
         </div>
       </div>
-      {currentBreak.active && (
-        <div className="prose">
-          <h2>Time to take a break!</h2>
-          <Countdown remainingTime={currentBreak.remainingTime} />
-          <button className="btn btn-primary">Resume</button>
-        </div>
-      )}
       <dialog id="turn_duration" className="modal">
         <TimerDurationForm onDurationSubmit={handleSetTurnDuration} />
       </dialog>
